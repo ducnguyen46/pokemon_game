@@ -1,4 +1,3 @@
-
 package Control;
 
 /**
@@ -62,7 +61,7 @@ public class ServerControl {
             Object o = ois.readObject();
             if (o instanceof User) {
                 User user = (User) o;
-                if(checkLogin(user)){
+                if (checkLogin(user)) {
                     oos.writeObject(user);
                 } else {
                     oos.writeObject(new User(-1, null, null, null, -1));
@@ -72,6 +71,7 @@ public class ServerControl {
             e.printStackTrace();
         }
     }
+
     private boolean checkLogin(User user) throws Exception {
         String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
         try {
@@ -79,22 +79,22 @@ public class ServerControl {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
 
-            
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                User u = new User();
-                u.setId(rs.getInt("id"));
-                u.setName(rs.getString("name"));
-                u.setUsername(rs.getString("username"));
-                u.setPassword(rs.getString("password"));
-                u.setScore(rs.getInt("score"));
+            if (rs.next()) {
                 
-                System.out.println(u.toString());
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setScore(rs.getInt("score"));
+
+                System.out.println(user.toString());
+                return true;
             }
-            return true;
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
         return false;
     }

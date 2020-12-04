@@ -41,6 +41,8 @@ public class ClientControl {
             ObjectOutputStream oos
                     = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(user);
+            //
+            System.out.println("user gui di: " + user.toString());
             
             // recieve data
             ObjectInputStream ois
@@ -48,6 +50,8 @@ public class ClientControl {
             Object o = ois.readObject();
             if (o instanceof User) {
                 User resultUser = (User) o;
+                //
+                System.out.println("user nhan ve: " + resultUser.toString());
                 if(resultUser.getId() == -1){
                     System.out.println("sai thong tin");
                     return false;
@@ -60,24 +64,6 @@ public class ClientControl {
             return false;
         }
         return false;
-    }
-
-    public String receiveData() {
-        String result = null;
-        try {
-            ObjectInputStream ois
-                    = new ObjectInputStream(mySocket.getInputStream());
-            Object o = ois.readObject();
-            if (o instanceof String) {
-                result = (String) o;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        System.out.println(result);
-        return result;
-
     }
 
     public boolean closeConnection() {
