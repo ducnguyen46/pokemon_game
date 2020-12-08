@@ -36,6 +36,7 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
     private JLabel lbScore;
     private JProgressBar progressTime;
     private JButton btnNewGame;
+    private JButton btnStopGame;
     private MyGraphics graphicsPanel;
     private JPanel mainPanel;
 
@@ -94,18 +95,19 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
         // create panel container panelScoreAndTime and button new game
         JPanel panelControl = new JPanel(new BorderLayout(10, 10));
         panelControl.setBorder(new EmptyBorder(10, 3, 5, 3));
-        panelControl.add(panelScoreAndTime, BorderLayout.CENTER);
-        panelControl.add(btnNewGame = createButton("New Game"),
-                BorderLayout.PAGE_END);
+        panelControl.add(panelScoreAndTime, BorderLayout.NORTH);
+        panelControl.add(btnNewGame = createButton("New Game"), BorderLayout.CENTER);
+        panelControl.add(btnStopGame = createButton("Stop Game"),
+                BorderLayout.SOUTH);
 
-        Icon icon = new ImageIcon(getClass().getResource(
-                "/icon/pokemon.png"));
+//        Icon icon = new ImageIcon(getClass().getResource(
+//                "/icon/pokemon.png"));
 
         // use panel set Layout BorderLayout to panel control in top
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new TitledBorder("Status"));
-        panel.add(panelControl, BorderLayout.PAGE_START);
-        panel.add(new JLabel(icon), BorderLayout.CENTER);
+        panel.add(panelControl, BorderLayout.CENTER);
+//        panel.add(new JLabel(icon), BorderLayout.CENTER);
         return panel;
     }
 
@@ -139,6 +141,9 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnNewGame) {
             newGame();
+        }
+        if(e.getSource() == btnStopGame){
+            // do something
         }
     }
 
