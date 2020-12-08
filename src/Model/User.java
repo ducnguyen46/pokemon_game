@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author nguye
+ * @author 
  */
 public class User implements Serializable{
     private int id;
@@ -17,13 +17,15 @@ public class User implements Serializable{
     private String username;
     private String password;
     private int score;
+    private int state;
 
-    public User(int id, String name, String username, String password, int score) {
+    public User(int id, String name, String username, String password, int score, int state) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
         this.score = score;
+        this.state = state;
     }
 
     public User() {
@@ -67,6 +69,14 @@ public class User implements Serializable{
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Override
