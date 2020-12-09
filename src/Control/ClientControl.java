@@ -43,6 +43,8 @@ public class ClientControl {
             //send data
             ObjectOutputStream oos
                     = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(new String("!login"));
+            new Thread().sleep(500);
             oos.writeObject(user);
             //
             System.out.println("user gửi đi: " + user.toString());
@@ -65,6 +67,8 @@ public class ClientControl {
         } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
             return false;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -78,7 +82,7 @@ public class ClientControl {
             new Thread().sleep(500);
             oos.writeObject(user);
             //
-            System.out.println("user gui di: " + user.toString());
+            System.out.println("user gửi đi: " + user.toString());
             
             // recieve data
             ObjectInputStream ois
