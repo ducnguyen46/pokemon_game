@@ -64,7 +64,7 @@ public class ServerControl {
                 if (checkLogin(user)) {
                     oos.writeObject(user);
                 } else {
-                    oos.writeObject(new User(-1, null, null, null, -1));
+                    oos.writeObject(new User(-1, null, null, null, -1, -1));
                 }
             }
         } catch (Exception e) {
