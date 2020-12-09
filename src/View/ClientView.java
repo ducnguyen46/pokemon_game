@@ -15,19 +15,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClientView extends javax.swing.JFrame {
 
-    private DefaultTableModel tmUO;
+    private DefaultTableModel tmOnline;
     /**
      * Creates new form ClientView
      */
     public ClientView() {
         initComponents();
         initTable();
+        loadOnlineList();
     }
     
     private void initTable() {
         String[] cols1 = {"Username", "Point", "State"};
-        tmUO = new DefaultTableModel(cols1, 0);
-        tblOnlineList.setModel(tmUO);
+        tmOnline = new DefaultTableModel(cols1, 0);
+        tblOnlineList.setModel(tmOnline);
+    }
+    
+    private void loadOnlineList() {
+        
     }
     
     public ArrayList<Integer> getString() {

@@ -17,6 +17,7 @@ import java.sql.Statement;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,9 +80,20 @@ public class ServerControl {
                         if (checkLogin(loginUser)) {
                             oos.writeObject(loginUser);
                             updateStateLogin(loginUser);
+                            oos.writeObject(readDB(loginUser));
+
                         } else {
                             oos.writeObject(new User(-1, null, null, null, -1, -1));
                         }
+                    }
+                }
+                
+                //send data
+                if (request.equalsIgnoreCase("!sendOnlineList")) {
+                    Object loginOject = ois.readObject();
+                    if (loginOject instanceof User) {
+                        User loginUser = (User) loginOject;
+                        oos.writeObject(readDB(loginUser));
                     }
                 }
             }
@@ -102,7 +114,7 @@ public class ServerControl {
                         }
                     }
                 }
-            }        
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,7 +146,7 @@ public class ServerControl {
         }
         return false;
     }
-    
+
     private boolean updateStateLogin(User user) {
         String sql = "UPDATE user SET state = 1 WHERE username = ?";
         try {
@@ -179,5 +191,29 @@ public class ServerControl {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    private ArrayList<User> readDB(User user) {
+        ArrayList<User> ul = new ArrayList<>();
+        String sql = "SELECT username, point, state FROM user WHERE state != 0 AND username != ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+            ResultSet rs = ps.executeQuery(sql);
+            
+            if (rs != null) {
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    int score = rs.getInt("score");
+                    int state = rs.getInt("state");
+
+                    ul.add(new User(username, score, state));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ul;
     }
 }
