@@ -7,6 +7,7 @@ package View;
 
 import Control.ClientControl;
 import Model.User;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -131,11 +132,11 @@ public class SignUpView extends javax.swing.JFrame {
         
         boolean kq = clientControl.signUp(user);
         if(kq){
-            System.out.println("Dang ki thanh cong");
+            JOptionPane.showMessageDialog(this, "Đăng kí thành công");
+            this.dispose();
         }
         else {
-            System.out.println("Loi: Ten dang nhap da ton tai!"
-                    + " Hay chon mot ten dang nhap khac");
+            JOptionPane.showMessageDialog(this, "Lỗi: Tên đăng nhập bị trùng");
         }
         clientControl.closeConnection();
     }//GEN-LAST:event_txtDangkiActionPerformed

@@ -27,7 +27,8 @@ public class ServerControl {
     private final int serverPort = 9876;
 
     public ServerControl() throws Exception {
-        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        //sua pass
+        getDBConnection("pikachu", "root", "root");
         openServer(serverPort);
         while (true) {
             listenning();
@@ -36,7 +37,8 @@ public class ServerControl {
 
     private void getDBConnection(String dbName, String username,
             String password) throws Exception {
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        //sua cong
+        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
             Class.forName(dbClass);
