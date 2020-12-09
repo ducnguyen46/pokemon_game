@@ -1,4 +1,3 @@
-
 package Control;
 
 import Model.User;
@@ -58,7 +57,7 @@ public class ClientControl {
                     return false;
                 } else {
                     user = resultUser;
-                   return true; 
+                    return true;
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
@@ -101,8 +100,28 @@ public class ClientControl {
         }
         return false;
     }
-    
-    
+
+    public ArrayList<User> loadOnlineList() {
+        ArrayList<User> kq = null;
+        try {
+            //send data
+            ObjectOutputStream oos
+                    = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(new String("!sendOnlineList"));
+            // recieve data
+            ObjectInputStream ois
+                    = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            if (o instanceof ArrayList) {
+                kq = (ArrayList<User>) o;
+
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return kq;
+    }
+
     public boolean logOut(User user) {
         try {
             //send data
@@ -113,16 +132,16 @@ public class ClientControl {
             oos.writeObject(user);
             //
             System.out.println("user gửi đi-logout: " + user.toString());
-            
+
             // recieve data
             ObjectInputStream ois
                     = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             if (o instanceof String) {
-                String kq = (String)o;
-                if(kq.equalsIgnoreCase("LogOutOK")){
+                String kq = (String) o;
+                if (kq.equalsIgnoreCase("LogOutOK")) {
                     return true;
-                } else if(kq.equalsIgnoreCase("LogOutNotOK")){
+                } else if (kq.equalsIgnoreCase("LogOutNotOK")) {
                     return false;
                 }
             }
@@ -134,7 +153,7 @@ public class ClientControl {
         }
         return false;
     }
-    
+
     public boolean closeConnection() {
         try {
             mySocket.close();

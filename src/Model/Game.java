@@ -12,7 +12,8 @@ import java.sql.Time;
  *
  * @author ACER
  */
-public class Game implements Serializable{
+public class Game implements Serializable {
+
     private int id;
     private Time timeFinish;
 
@@ -39,5 +40,5 @@ public class Game implements Serializable{
     public void setTimeFinish(Time timeFinish) {
         this.timeFinish = timeFinish;
     }
-    
+
 }

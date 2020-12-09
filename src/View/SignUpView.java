@@ -129,13 +129,12 @@ public class SignUpView extends javax.swing.JFrame {
         user.setPassword(txtPassword.getText());
         ClientControl clientControl = new ClientControl();
         clientControl.openConnection();
-        
+
         boolean kq = clientControl.signUp(user);
-        if(kq){
+        if (kq) {
             JOptionPane.showMessageDialog(this, "Đăng kí thành công");
             this.dispose();
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "Lỗi: Tên đăng nhập bị trùng");
         }
         clientControl.closeConnection();

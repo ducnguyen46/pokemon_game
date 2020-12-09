@@ -20,25 +20,36 @@ import javax.swing.table.DefaultTableModel;
 public class ClientView extends javax.swing.JFrame {
 
     private User user;
+//    private ClientControl clientCtrl;
     private DefaultTableModel tmOnline;
     /**
      * Creates new form ClientView
      */
     public ClientView(User user) {
         this.user = user;
+    //    this.clientCtrl = clientCtrl;, ClientControl clientCtrl
         initComponents();
         initTable();
         loadOnlineList();
     }
     
     private void initTable() {
-        String[] cols1 = {"Username", "Point", "State"};
+        String[] cols1 = {"Username", "Score", "State"};
         tmOnline = new DefaultTableModel(cols1, 0);
         tblOnlineList.setModel(tmOnline);
     }
     
     private void loadOnlineList() {
-        List<User> a = new ArrayList<>();
+        ClientControl clientCtrl = new ClientControl();
+        clientCtrl.openConnection();
+        ArrayList<User> a = clientCtrl.loadOnlineList();
+        
+        if(a != null)
+            tmOnline.setRowCount(0);
+        for(User i : a){
+            tmOnline.addRow(i.toObject());
+        }  
+        clientCtrl.closeConnection();
     }
     
     public ArrayList<Integer> getString() {
@@ -139,9 +150,9 @@ public class ClientView extends javax.swing.JFrame {
 
     private void txtThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThoatActionPerformed
         //thay đổi state trước
-        ClientControl clientControl = new ClientControl();
-        clientControl.openConnection();
-        boolean rs = clientControl.logOut(user);
+        ClientControl clientCtrl = new ClientControl();
+        clientCtrl.openConnection();
+        boolean rs = clientCtrl.logOut(user);
         if(rs){
             JOptionPane.showMessageDialog(this, "Đã thoát");
             // đóng kết nối
@@ -151,6 +162,7 @@ public class ClientView extends javax.swing.JFrame {
                     + " ở lại chơi thêm với chúng mình!");
         }
         //
+        clientCtrl.closeConnection();
         this.dispose();
         new LoginView().setVisible(true);
         

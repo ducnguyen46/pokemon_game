@@ -90,6 +90,9 @@ public class User implements Serializable{
         this.state = state;
     }
 
+    public Object[] toObject(){
+        return new Object[]{username, score, (state == 1? "Đang rảnh": "Đang bận")};
+    }
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", score=" + score + '}';
