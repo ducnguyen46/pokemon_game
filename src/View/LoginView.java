@@ -116,10 +116,11 @@ public class LoginView extends javax.swing.JFrame {
         clientControl.openConnection();
         boolean result = clientControl.checkLogin(user);
         if(result){
+            System.out.println(user.toString());
             System.out.println("Đăng nhập thành công!");
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
             this.dispose();
-            new ClientView().setVisible(true);
+            new ClientView(user).setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Tài khoản/Mật khẩu không chính xác!");
         }

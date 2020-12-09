@@ -55,6 +55,7 @@ public class ClientControl {
                     System.out.println("Sai thông tin");
                     return false;
                 } else {
+                    user = resultUser;
                    return true; 
                 }
             }
@@ -98,7 +99,40 @@ public class ClientControl {
         }
      return false;   
     }
-
+    
+    
+    public boolean logOut(User user) {
+        try {
+            //send data
+            ObjectOutputStream oos
+                    = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(new String("!logout"));
+            new Thread().sleep(500);
+            oos.writeObject(user);
+            //
+            System.out.println("user gửi đi-logout: " + user.toString());
+            
+            // recieve data
+            ObjectInputStream ois
+                    = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            if (o instanceof String) {
+                String kq = (String)o;
+                if(kq.equalsIgnoreCase("LogOutOK")){
+                    return true;
+                } else if(kq.equalsIgnoreCase("LogOutNotOK")){
+                    return false;
+                }
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+            return false;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     public boolean closeConnection() {
         try {
             mySocket.close();

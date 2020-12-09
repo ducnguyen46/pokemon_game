@@ -28,8 +28,8 @@ public class ServerControl {
 
     public ServerControl() throws Exception {
         //sua pass
-//        getDBConnection("pikachu", "root", "root");
-        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        getDBConnection("pikachu", "root", "root");
+//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
 
         openServer(serverPort);
         while (true) {
@@ -40,8 +40,8 @@ public class ServerControl {
     private void getDBConnection(String dbName, String username,
             String password) throws Exception {
         //sua cong
-//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
@@ -99,6 +99,19 @@ public class ServerControl {
                             oos.writeObject(new String("SignUpOK"));
                         } else {
                             oos.writeObject(new String("SignUpNotOK"));
+                        }
+                    }
+                }
+                //logout
+                if(request.equalsIgnoreCase("!logout")){
+                    Object logOutObject = ois.readObject();
+                    if (logOutObject instanceof User) {
+                        User logOutUser = (User) logOutObject;
+                        boolean kq = logOut(logOutUser);
+                        if (kq) {
+                            oos.writeObject(new String("LogOutOK"));
+                        } else {
+                            oos.writeObject(new String("logOutNotOK"));
                         }
                     }
                 }
@@ -177,6 +190,32 @@ public class ServerControl {
 
         } catch (SQLException ex) {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    private boolean logOut(User user){
+        if(updateStateLogOut(user)){
+            System.out.println("Server Control - user logout");
+            return true;
+        }
+        return false;
+    }
+    
+        private boolean updateStateLogOut(User user) {
+        String sql = "UPDATE user SET state = 0 WHERE username = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+
+            int rs = ps.executeUpdate();
+            if (rs != 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
         return false;
     }
