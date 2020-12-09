@@ -64,7 +64,7 @@ public class ClientView extends javax.swing.JFrame {
 
         btnRanking.setText("Ranking");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("PIKACHU");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
