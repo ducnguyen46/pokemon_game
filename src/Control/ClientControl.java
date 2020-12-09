@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +44,7 @@ public class ClientControl {
             oos.writeObject(user);
             //
             System.out.println("user gửi đi: " + user.toString());
-            
+
             // recieve data
             ObjectInputStream ois
                     = new ObjectInputStream(mySocket.getInputStream());
@@ -51,7 +53,7 @@ public class ClientControl {
                 User resultUser = (User) o;
                 //
                 System.out.println("user nhận về: " + resultUser.toString());
-                if(resultUser.getId() == -1){
+                if (resultUser.getId() == -1) {
                     System.out.println("Sai thông tin");
                     return false;
                 } else {
@@ -67,8 +69,8 @@ public class ClientControl {
         }
         return false;
     }
-    
-    public boolean signUp(User user){
+
+    public boolean signUp(User user) {
         try {
             //send data
             ObjectOutputStream oos
@@ -78,16 +80,16 @@ public class ClientControl {
             oos.writeObject(user);
             //
             System.out.println("user gửi đi: " + user.toString());
-            
+
             // recieve data
             ObjectInputStream ois
                     = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             if (o instanceof String) {
-                String kq = (String)o;
-                if(kq.equalsIgnoreCase("SignUpOK")){
+                String kq = (String) o;
+                if (kq.equalsIgnoreCase("SignUpOK")) {
                     return true;
-                } else if(kq.equalsIgnoreCase("SignUpNotOK")){
+                } else if (kq.equalsIgnoreCase("SignUpNotOK")) {
                     return false;
                 }
             }
@@ -97,7 +99,7 @@ public class ClientControl {
         } catch (InterruptedException ex) {
             Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
-     return false;   
+        return false;
     }
     
     

@@ -8,6 +8,7 @@ package View;
 import Control.ClientControl;
 import Model.User;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,8 +19,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClientView extends javax.swing.JFrame {
 
-    private DefaultTableModel tmUO;
     private User user;
+    private DefaultTableModel tmOnline;
     /**
      * Creates new form ClientView
      */
@@ -27,12 +28,17 @@ public class ClientView extends javax.swing.JFrame {
         this.user = user;
         initComponents();
         initTable();
+        loadOnlineList();
     }
     
     private void initTable() {
         String[] cols1 = {"Username", "Point", "State"};
-        tmUO = new DefaultTableModel(cols1, 0);
-        tblOnlineList.setModel(tmUO);
+        tmOnline = new DefaultTableModel(cols1, 0);
+        tblOnlineList.setModel(tmOnline);
+    }
+    
+    private void loadOnlineList() {
+        List<User> a = new ArrayList<>();
     }
     
     public ArrayList<Integer> getString() {
