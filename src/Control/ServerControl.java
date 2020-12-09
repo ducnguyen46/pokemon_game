@@ -78,6 +78,7 @@ public class ServerControl {
                         User loginUser = (User) loginOject;
                         if (checkLogin(loginUser)) {
                             oos.writeObject(loginUser);
+                            updateStateLogin(loginUser);
                         } else {
                             oos.writeObject(new User(-1, null, null, null, -1, -1));
                         }
@@ -101,7 +102,7 @@ public class ServerControl {
                         }
                     }
                 }
-            }
+            }        
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,6 +125,24 @@ public class ServerControl {
                 user.setScore(rs.getInt("score"));
 
                 System.out.println(user.toString());
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+    
+    private boolean updateStateLogin(User user) {
+        String sql = "UPDATE user SET state = 1 WHERE username = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+
+            int rs = ps.executeUpdate();
+            if (rs != 0) {
                 return true;
             }
 
