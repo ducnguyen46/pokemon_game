@@ -28,7 +28,9 @@ public class ServerControl {
 
     public ServerControl() throws Exception {
         //sua pass
-        getDBConnection("pikachu", "root", "root");
+//        getDBConnection("pikachu", "root", "root");
+        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+
         openServer(serverPort);
         while (true) {
             listenning();
@@ -38,7 +40,9 @@ public class ServerControl {
     private void getDBConnection(String dbName, String username,
             String password) throws Exception {
         //sua cong
+//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
         String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
             Class.forName(dbClass);
@@ -63,7 +67,7 @@ public class ServerControl {
             ObjectInputStream ois = new ObjectInputStream(stuSocket.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(stuSocket.getOutputStream());
             Object o = ois.readObject();
-            
+
             if (o instanceof String) {
                 String request = (String) o;
 
