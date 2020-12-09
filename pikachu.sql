@@ -8,7 +8,7 @@ CREATE TABLE user (
     Username VARCHAR(255) NOT NULL,
     Password VARCHAR(255) NOT NULL,
     Score INT NOT NULL DEFAULT 0,
-    State INT
+    State INT DEFAULT 0
 );
 
 CREATE TABLE game (
