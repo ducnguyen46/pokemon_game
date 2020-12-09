@@ -71,7 +71,7 @@ public class ServerControl {
             }
             if(o instanceof String){
                 String request = (String)o;
-                System.out.println(request);
+                
                 //dang ki
                 if(request.equalsIgnoreCase("!signUp")){
                     Object signUpOject = ois.readObject();
