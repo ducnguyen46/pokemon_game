@@ -5,7 +5,9 @@
  */
 package View;
 
+import Model.User;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JList;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,7 +34,7 @@ public class ClientView extends javax.swing.JFrame {
     }
     
     private void loadOnlineList() {
-        
+        List<User> a = new ArrayList<>();
     }
     
     public ArrayList<Integer> getString() {
