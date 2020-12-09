@@ -41,7 +41,7 @@ public class ServerControl {
             String password) throws Exception {
         //sua cong
 //        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
