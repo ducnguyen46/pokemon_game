@@ -42,7 +42,7 @@ public class ClientControl {
                     = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(user);
             //
-            System.out.println("user gui di: " + user.toString());
+            System.out.println("user gửi đi: " + user.toString());
             
             // recieve data
             ObjectInputStream ois
@@ -51,9 +51,9 @@ public class ClientControl {
             if (o instanceof User) {
                 User resultUser = (User) o;
                 //
-                System.out.println("user nhan ve: " + resultUser.toString());
+                System.out.println("user nhận về: " + resultUser.toString());
                 if(resultUser.getId() == -1){
-                    System.out.println("sai thong tin");
+                    System.out.println("Sai thông tin");
                     return false;
                 } else {
                    return true; 

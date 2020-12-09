@@ -58,15 +58,13 @@ public class LoginView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(75, 75, 75)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtPassword))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(txtPassword)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(168, 168, 168)
                         .addComponent(btnLogin)))
@@ -92,16 +90,14 @@ public class LoginView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        User user = new User();
-        user.setUsername(txtUsername.getText().trim());
-        user.setPassword(txtPassword.getText());
+        User user = new User(txtUsername.getText().trim(), txtPassword.getText());
         ClientControl clientControl = new ClientControl();
         clientControl.openConnection();
         boolean result = clientControl.checkLogin(user);
         if(result){
-            System.out.println("Dang nhap thanh cong!");
+            System.out.println("Đăng nhập thành công!");
         } else {
-            System.out.println("Dang nhap lai di!");
+            System.out.println("Tài khoản/Mật khẩu không chính xác!");
         }
         clientControl.closeConnection();
     }//GEN-LAST:event_btnLoginActionPerformed

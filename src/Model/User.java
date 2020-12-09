@@ -19,6 +19,14 @@ public class User implements Serializable{
     private int score;
     private int state;
 
+    public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
     public User(int id, String name, String username, String password, int score, int state) {
         this.id = id;
         this.name = name;
@@ -26,9 +34,6 @@ public class User implements Serializable{
         this.password = password;
         this.score = score;
         this.state = state;
-    }
-
-    public User() {
     }
 
     public int getId() {
