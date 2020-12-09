@@ -27,7 +27,7 @@ public class ServerControl {
     private final int serverPort = 9876;
 
     public ServerControl() throws Exception {
-        getDBConnection("pokemon", "root", "");
+        getDBConnection("pikachu", "root", "Dangtiendat1999!");
         openServer(serverPort);
         while (true) {
             listenning();
@@ -119,7 +119,7 @@ public class ServerControl {
     }
     
     private boolean signUp(User user) {
-        String sqlCheck = "SELECT username FROM user WHERE username = ?";
+        String sqlCheck = "SELECT * FROM user WHERE username = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sqlCheck);
             ps.setString(1, user.getUsername());
@@ -128,7 +128,7 @@ public class ServerControl {
             if(rs.next()){
                 return false;
             } else {
-                String sqlInsert = "INSERT INTO user VALUES(0, ?, ?, ?, 0);";
+                String sqlInsert = "INSERT INTO user VALUES(1, ?, ?, ?, 0);";
                 PreparedStatement psInsert = con.prepareStatement(sqlInsert, PreparedStatement.RETURN_GENERATED_KEYS);
                 psInsert.setString(1, user.getName());
                 psInsert.setString(2, user.getUsername());
