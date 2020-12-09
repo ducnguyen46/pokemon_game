@@ -71,7 +71,7 @@ public class ServerControl {
             }
             if(o instanceof String){
                 String request = (String)o;
-                
+                System.out.println(request);
                 //dang ki
                 if(request.equalsIgnoreCase("!signUp")){
                     Object signUpOject = ois.readObject();
@@ -128,7 +128,7 @@ public class ServerControl {
             if(rs.next()){
                 return false;
             } else {
-                String sqlInsert = "INSERT INTO user VALUES(1, ?, ?, ?, 0);";
+                String sqlInsert = "INSERT INTO user VALUES(0, ?, ?, ?, 0,0);";
                 PreparedStatement psInsert = con.prepareStatement(sqlInsert, PreparedStatement.RETURN_GENERATED_KEYS);
                 psInsert.setString(1, user.getName());
                 psInsert.setString(2, user.getUsername());
