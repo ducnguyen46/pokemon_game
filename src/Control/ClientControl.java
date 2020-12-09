@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 public class ClientControl {
 
+    //public ArrayList<User> a = new ArrayList<>();
     private Socket mySocket;
 //    private String serverHost = "192.168.43.216";
     private String serverHost = "localhost";
@@ -101,13 +102,14 @@ public class ClientControl {
         return false;
     }
 
-    public ArrayList<User> loadOnlineList() {
+    public ArrayList<User> loadOnlineList(User user) {
         ArrayList<User> kq = null;
         try {
             //send data
             ObjectOutputStream oos
                     = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(new String("!sendOnlineList"));
+            oos.writeObject(user);
             // recieve data
             ObjectInputStream ois
                     = new ObjectInputStream(mySocket.getInputStream());

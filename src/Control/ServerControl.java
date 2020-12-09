@@ -34,7 +34,7 @@ public class ServerControl {
 
         openServer(serverPort);
         while (true) {
-            listenning();
+            listening();
         }
     }
 
@@ -62,7 +62,7 @@ public class ServerControl {
         }
     }
 
-    private void listenning() {
+    private void listening() {
         try {
             Socket stuSocket = myServer.accept();
             ObjectInputStream ois = new ObjectInputStream(stuSocket.getInputStream());
@@ -238,14 +238,14 @@ public class ServerControl {
         return false;
     }
 
-    private ArrayList<User> readDB(User user) {
-        ArrayList<User> ul = new ArrayList<>();
-        String sql = "SELECT username, point, state FROM user WHERE state != 0 AND username != ?";
+    private ArrayList readDB(User user) {
+        ArrayList ul = new ArrayList<>();
+        String sql = "SELECT username, score, state FROM user WHERE state != 0 AND username != ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getUsername());
-            ResultSet rs = ps.executeQuery(sql);
+            ResultSet rs = ps.executeQuery();
 
             if (rs != null) {
                 while (rs.next()) {

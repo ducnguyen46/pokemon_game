@@ -36,7 +36,7 @@ public class SignUpView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtDangki = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
 
@@ -48,10 +48,10 @@ public class SignUpView extends javax.swing.JFrame {
 
         jLabel3.setText("Password");
 
-        txtDangki.setText("Register");
-        txtDangki.addActionListener(new java.awt.event.ActionListener() {
+        btnRegister.setText("Register");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDangkiActionPerformed(evt);
+                btnRegisterActionPerformed(evt);
             }
         });
 
@@ -88,7 +88,7 @@ public class SignUpView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(123, 123, 123)
-                        .addComponent(txtDangki, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(139, 139, 139)
                         .addComponent(jLabel4)))
@@ -115,14 +115,14 @@ public class SignUpView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(36, 36, 36)
-                .addComponent(txtDangki)
+                .addComponent(btnRegister)
                 .addGap(46, 46, 46))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDangkiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDangkiActionPerformed
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         User user = new User();
         user.setName(txtName.getText());
         user.setUsername(txtUsername.getText());
@@ -138,18 +138,18 @@ public class SignUpView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi: Tên đăng nhập bị trùng");
         }
         clientControl.closeConnection();
-    }//GEN-LAST:event_txtDangkiActionPerformed
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JButton txtDangki;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;

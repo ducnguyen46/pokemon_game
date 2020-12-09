@@ -13,48 +13,49 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/** pul
+/**
+ * pul
  *
  * @author nguye
  */
 public class ClientView extends javax.swing.JFrame {
 
     private User user;
-//    private ClientControl clientCtrl;
     private DefaultTableModel tmOnline;
+
     /**
      * Creates new form ClientView
      */
     public ClientView(User user) {
         this.user = user;
-    //    this.clientCtrl = clientCtrl;, ClientControl clientCtrl
         initComponents();
         initTable();
         loadOnlineList();
     }
-    
+
     private void initTable() {
         String[] cols1 = {"Username", "Score", "State"};
         tmOnline = new DefaultTableModel(cols1, 0);
         tblOnlineList.setModel(tmOnline);
     }
-    
+
     private void loadOnlineList() {
         ClientControl clientCtrl = new ClientControl();
         clientCtrl.openConnection();
-        ArrayList<User> a = clientCtrl.loadOnlineList();
-        
-        if(a != null)
+        ArrayList<User> a = clientCtrl.loadOnlineList(user);
+        if (a != null) {
             tmOnline.setRowCount(0);
-        for(User i : a){
+            System.out.println(a.size());
+        }
+        for (User i : a) {
             tmOnline.addRow(i.toObject());
-        }  
+        }
         clientCtrl.closeConnection();
     }
-    
+
     public ArrayList<Integer> getString() {
         ArrayList<Integer> list = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             list.add(i);
         }
         return list;
@@ -74,7 +75,7 @@ public class ClientView extends javax.swing.JFrame {
         btnInvite = new javax.swing.JButton();
         btnRanking = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtThoat = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,11 +99,11 @@ public class ClientView extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("PIKACHU");
 
-        txtThoat.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        txtThoat.setText("Log out");
-        txtThoat.addActionListener(new java.awt.event.ActionListener() {
+        btnLogOut.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        btnLogOut.setText("Log out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtThoatActionPerformed(evt);
+                btnLogOutActionPerformed(evt);
             }
         });
 
@@ -114,7 +115,7 @@ public class ClientView extends javax.swing.JFrame {
                 .addGap(234, 234, 234)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(22, 22, 22)
@@ -131,7 +132,7 @@ public class ClientView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtThoat))
+                    .addComponent(btnLogOut))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(168, 168, 168)
@@ -148,16 +149,16 @@ public class ClientView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThoatActionPerformed
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         //thay đổi state trước
         ClientControl clientCtrl = new ClientControl();
         clientCtrl.openConnection();
         boolean rs = clientCtrl.logOut(user);
-        if(rs){
+        if (rs) {
             JOptionPane.showMessageDialog(this, "Đã thoát");
             // đóng kết nối
             new LoginView().setVisible(true);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(this, "Chưa thoát được rồi,"
                     + " ở lại chơi thêm với chúng mình!");
         }
@@ -165,16 +166,15 @@ public class ClientView extends javax.swing.JFrame {
         clientCtrl.closeConnection();
         this.dispose();
         new LoginView().setVisible(true);
-        
-    }//GEN-LAST:event_txtThoatActionPerformed
+    }//GEN-LAST:event_btnLogOutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInvite;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnRanking;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblOnlineList;
-    private javax.swing.JButton txtThoat;
     // End of variables declaration//GEN-END:variables
 }
