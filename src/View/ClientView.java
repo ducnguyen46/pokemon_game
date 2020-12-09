@@ -7,6 +7,7 @@ package View;
 
 import java.util.ArrayList;
 import javax.swing.JList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,12 +15,19 @@ import javax.swing.JList;
  */
 public class ClientView extends javax.swing.JFrame {
 
+    private DefaultTableModel tmUO;
     /**
      * Creates new form ClientView
      */
     public ClientView() {
         initComponents();
-        
+        initTable();
+    }
+    
+    private void initTable() {
+        String[] cols1 = {"Username", "Point", "State"};
+        tmUO = new DefaultTableModel(cols1, 0);
+        tblOnlineList.setModel(tmUO);
     }
     
     public ArrayList<Integer> getString() {
@@ -124,6 +132,7 @@ public class ClientView extends javax.swing.JFrame {
         //
         this.dispose();
         new LoginView().setVisible(true);
+        
     }//GEN-LAST:event_txtThoatActionPerformed
 
     /**

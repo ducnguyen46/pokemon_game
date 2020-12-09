@@ -102,7 +102,7 @@ public class ServerControl {
                         }
                     }
                 }
-            }
+            }        
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +152,7 @@ public class ServerControl {
         }
         return false;
     }
-    
+
     private boolean signUp(User user) {
         String sqlCheck = "SELECT * FROM user WHERE username = ?";
         try {
