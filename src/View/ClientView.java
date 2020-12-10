@@ -98,11 +98,6 @@ public class ClientView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblOnlineList);
 
         btnInvite.setText("Invite");
-        btnInvite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInviteActionPerformed(evt);
-            }
-        });
 
         btnRanking.setText("Ranking");
 
@@ -182,22 +177,6 @@ public class ClientView extends javax.swing.JFrame {
         int row = tblOnlineList.getSelectedRow();
         user1.setName(tmOnline.getValueAt(row, 0).toString());
     }//GEN-LAST:event_tblOnlineListMouseClicked
-
-    private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInviteActionPerformed
-    /*    ClientControl clientControl = new ClientControl();
-        clientControl.openConnection();
-        boolean result = clientControl.sendInvite(user1);
-        if (result) {
-            System.out.println(user.toString());
-            System.out.println("Đăng nhập thành công!");
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-            new ClientView(user).setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Tài khoản/Mật khẩu không chính xác!");
-        }
-        clientControl.closeConnection();*/
-    }//GEN-LAST:event_btnInviteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
