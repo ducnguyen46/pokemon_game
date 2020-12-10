@@ -12,12 +12,12 @@ package Model;
 public class Game_Detail {
     private int idGame;
     private int idPlayer;
-    private float point;
+    private double point;
 
     public Game_Detail() {
     }
 
-    public Game_Detail(int idGame, int idPlayer, float point) {
+    public Game_Detail(int idGame, int idPlayer, double point) {
         this.idGame = idGame;
         this.idPlayer = idPlayer;
         this.point = point;
@@ -39,11 +39,11 @@ public class Game_Detail {
         this.idPlayer = idPlayer;
     }
 
-    public float getPoint() {
+    public double getPoint() {
         return point;
     }
 
-    public void setPoint(float point) {
+    public void setPoint(double point) {
         this.point = point;
     }
     
