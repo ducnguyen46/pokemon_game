@@ -165,7 +165,7 @@ public class ServerControl {
                 user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                user.setScore(rs.getInt("score"));
+                user.setScore(rs.getDouble("score"));
 
                 System.out.println(user.toString());
                 return true;
@@ -262,7 +262,7 @@ public class ServerControl {
             if (rs != null) {
                 while (rs.next()) {
                     String username = rs.getString("username");
-                    int score = rs.getInt("score");
+                    double score = rs.getDouble("score");
                     int state = rs.getInt("state");
 
                     ul.add(new User(username, score, state));
