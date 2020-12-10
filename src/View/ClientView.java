@@ -6,6 +6,8 @@
 package View;
 
 import Control.ClientControl;
+import Game.Algorithm;
+import Game.MyMain;
 import Model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +95,11 @@ public class ClientView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblOnlineList);
 
         btnInvite.setText("Invite");
+        btnInvite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInviteActionPerformed(evt);
+            }
+        });
 
         btnRanking.setText("Ranking");
 
@@ -167,6 +174,19 @@ public class ClientView extends javax.swing.JFrame {
         this.dispose();
         new LoginView().setVisible(true);
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInviteActionPerformed
+        ClientControl clientCtrl = new ClientControl();
+        clientCtrl.openConnection();
+
+        Algorithm algorithm = clientCtrl.createNewGame();
+        if(algorithm != null){
+            new MyMain(algorithm);
+            new MyMain(algorithm);
+        }
+        
+        clientCtrl.closeConnection();
+    }//GEN-LAST:event_btnInviteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

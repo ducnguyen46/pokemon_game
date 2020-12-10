@@ -1,5 +1,6 @@
 package Control;
 
+import Game.Algorithm;
 import Model.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +17,7 @@ public class ClientControl {
 
     //public ArrayList<User> a = new ArrayList<>();
     private Socket mySocket;
-//    private String serverHost = "192.168.43.216";
+//    private String serverHost = "192.168.43.215";
     private String serverHost = "localhost";
 
     private int serverPort = 9876;
@@ -154,6 +155,28 @@ public class ClientControl {
             Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+    
+    public Algorithm createNewGame(){
+        Algorithm algorithm = null;
+        try {
+            //send data
+            ObjectOutputStream oos
+                    = new ObjectOutputStream(mySocket.getOutputStream());
+            oos.writeObject(new String("!NewGame"));
+            // recieve data
+            
+            ObjectInputStream ois
+                    = new ObjectInputStream(mySocket.getInputStream());
+            Object o = ois.readObject();
+            if (o instanceof Algorithm) {
+                algorithm = (Algorithm)o;
+                
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return algorithm;
     }
 
     public boolean closeConnection() {

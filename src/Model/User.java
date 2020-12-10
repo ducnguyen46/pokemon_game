@@ -16,7 +16,7 @@ public class User implements Serializable{
     private String name;
     private String username;
     private String password;
-    private int score;
+    private double score;
     private int state;
 
     public User() {
@@ -27,13 +27,13 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public User(String username, int score, int state) {
+    public User(String username, double score, int state) {
         this.username = username;
         this.score = score;
         this.state = state;
     }
     
-    public User(int id, String name, String username, String password, int score, int state) {
+    public User(int id, String name, String username, String password, double score, int state) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -74,7 +74,7 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 

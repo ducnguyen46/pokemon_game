@@ -6,16 +6,18 @@ package Game;
  */
 public class MyMain {
 	MyFrame frame;
+        static Algorithm algorithm;
 
-	public MyMain() {
-		frame = new MyFrame();
+	public MyMain(Algorithm algorithm) {
+            this.algorithm = algorithm;
+		frame = new MyFrame(algorithm);
 		MyTimeCount timeCount = new MyTimeCount();
 		timeCount.start();
 		new Thread(frame).start();
 	}
 
 	public static void main(String[] args) {
-		new MyMain();
+		new MyMain(algorithm);
 	}
 
 	class MyTimeCount extends Thread {

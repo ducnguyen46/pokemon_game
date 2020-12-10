@@ -39,8 +39,10 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
     private JButton btnStopGame;
     private MyGraphics graphicsPanel;
     private JPanel mainPanel;
+    private Algorithm algorithm;
 
-    public MyFrame() {
+    public MyFrame(Algorithm algorithm) {
+        this.algorithm = algorithm;
         add(mainPanel = createMainPanel());
         setTitle("Pokemon Game");
         setResizable(false);
@@ -64,7 +66,7 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
     }
 
     private JPanel createGraphicsPanel() {
-        graphicsPanel = new MyGraphics(this, row, col);
+        graphicsPanel = new MyGraphics(this, row, col, algorithm);
         
         JPanel panel = new JPanel(new GridBagLayout());
         // panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -96,7 +98,9 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
         JPanel panelControl = new JPanel(new BorderLayout(10, 10));
         panelControl.setBorder(new EmptyBorder(10, 3, 5, 3));
         panelControl.add(panelScoreAndTime, BorderLayout.NORTH);
-        panelControl.add(btnNewGame = createButton("New Game"), BorderLayout.CENTER);
+        btnNewGame = createButton("New Game");
+        panelControl.add(btnNewGame, BorderLayout.CENTER);
+        btnNewGame.setEnabled(false);
         panelControl.add(btnStopGame = createButton("Stop Game"),
                 BorderLayout.SOUTH);
 
