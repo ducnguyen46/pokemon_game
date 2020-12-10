@@ -6,6 +6,8 @@
 package View;
 
 import Control.ClientControl;
+import Game.Algorithm;
+import Game.MyMain;
 import Model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +100,11 @@ public class ClientView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblOnlineList);
 
         btnInvite.setText("Invite");
+        btnInvite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInviteActionPerformed(evt);
+            }
+        });
 
         btnRanking.setText("Ranking");
 
@@ -173,10 +180,40 @@ public class ClientView extends javax.swing.JFrame {
         new LoginView().setVisible(true);
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+<<<<<<< HEAD
+    private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInviteActionPerformed
+        ClientControl clientCtrl = new ClientControl();
+        clientCtrl.openConnection();
+
+        Algorithm algorithm = clientCtrl.createNewGame();
+        if(algorithm != null){
+            new MyMain(algorithm);
+            new MyMain(algorithm);
+        }
+        
+        clientCtrl.closeConnection();
+=======
     private void tblOnlineListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOnlineListMouseClicked
         int row = tblOnlineList.getSelectedRow();
         user1.setName(tmOnline.getValueAt(row, 0).toString());
     }//GEN-LAST:event_tblOnlineListMouseClicked
+
+    private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInviteActionPerformed
+    /*    ClientControl clientControl = new ClientControl();
+        clientControl.openConnection();
+        boolean result = clientControl.sendInvite(user1);
+        if (result) {
+            System.out.println(user.toString());
+            System.out.println("Đăng nhập thành công!");
+            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+            new ClientView(user).setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Tài khoản/Mật khẩu không chính xác!");
+        }
+        clientControl.closeConnection();*/
+>>>>>>> fdfb7882b90323671ea4251528ffbe22fb8e6505
+    }//GEN-LAST:event_btnInviteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

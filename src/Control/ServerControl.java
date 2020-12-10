@@ -58,6 +58,7 @@ public class ServerControl {
     private void openServer(int portNumber) {
         try {
             myServer = new ServerSocket(portNumber);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,13 +137,14 @@ public class ServerControl {
             }
             
 //            // create new game
-//            if (o instanceof String){
-//                String createNewGame = (String)o;
-//                if(createNewGame.equalsIgnoreCase("!NewGame")){
-//                    oos.writeObject(createNewGame());
-//                    
-//                }
-//            }
+            if (o instanceof String){
+                String createNewGame = (String)o;
+                if(createNewGame.equalsIgnoreCase("!NewGame")){
+                    Algorithm algorithm = new Algorithm(12, 12);
+                    oos.writeObject(algorithm);
+                    
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -272,17 +274,17 @@ public class ServerControl {
         return ul;
     }
     
-//    private String createNewGame(){
-//        Algorithm algorithm = new Algorithm(12, 12);
-//        int[][] matrix = algorithm.getMatrix();
-//        String matrixLine = "";
-//        for (int row = 0; row < matrix.length; row++) {
-//            for (int col = 0; col < matrix[row].length; col++) {
-//                matrixLine += matrix[row][col] + ",";
-//            }
-//        }
-//        System.out.println(matrixLine);
-//        return matrixLine;
-//    }
+    private String createNewGame(){
+        Algorithm algorithm = new Algorithm(12, 12);
+        int[][] matrix = algorithm.getMatrix();
+        String matrixLine = "";
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = 0; col < matrix[row].length; col++) {
+                matrixLine += matrix[row][col] + ",";
+            }
+        }
+        System.out.println(matrixLine);
+        return matrixLine;
+    }
 
 }

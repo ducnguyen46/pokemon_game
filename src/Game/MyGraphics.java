@@ -46,7 +46,8 @@ public class MyGraphics extends JPanel implements ActionListener {
     private Color backGroundColor = Color.lightGray;
     private int item;
 
-    public MyGraphics(MyFrame frame, int row, int col) {
+    public MyGraphics(MyFrame frame, int row, int col, Algorithm algorithm) {
+        this.algorithm = algorithm;
         this.frame = frame;
         this.row = row + 2;
         this.col = col + 2;
@@ -64,40 +65,14 @@ public class MyGraphics extends JPanel implements ActionListener {
     }
 
     public void newGame() {
-        algorithm = new Algorithm(this.row, this.col);
         int[][] matrix = getAlgorithm().getMatrix();
-        String matrixLine = "";
-        for (int row = 0; row < matrix.length; row++) {
-            for (int col = 0; col < matrix[row].length; col++) {
-                matrixLine += matrix[row][col] + ",";
-            }
-        }
-        System.out.println(matrixLine);
-        addArrayButton(matrixLine);
+        addArrayButton(matrix);
 
     }
 
-    private void addArrayButton(String matrixLine) {
+    private void addArrayButton(int[][] matrix) {
 
-        //////
-        String[] matrixString = matrixLine.split(",");
-        int[][] matrixRecived = new int[12][12];
-
-        int matrixStringItem = 0;
-        for (int row = 0; row < 12; row++) {
-            for (int col = 0; col < 12; col++) {
-                matrixRecived[row][col] = Integer.parseInt(matrixString[matrixStringItem]);
-                matrixStringItem++;
-            }
-        }
-
-        for (int row = 0; row < 12; row++) {
-            for (int col = 0; col < 12; col++) {
-                System.out.print(matrixRecived[row][col] + " ");
-            }
-            System.out.println("");
-        }
-        //
+        int[][] matrixRecived = matrix;
 
         btn = new JButton[row][col];
         for (int i = 1; i < row - 1; i++) {

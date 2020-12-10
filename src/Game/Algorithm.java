@@ -3,6 +3,7 @@ package Game;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ import java.util.Scanner;
  * ----------------- @author nguyenvanquan7826 -----------------
  * ---------------nguyenvanquan7826.wordpress.com --------------
  */
-public class Algorithm {
+public class Algorithm implements Serializable{
 	private int row;
 	private int col;
 	private int notBarrier = 0;
