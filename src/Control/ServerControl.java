@@ -4,6 +4,7 @@ package Control;
  *
  * @author 503
  */
+import Game.Algorithm;
 import Model.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,8 +30,8 @@ public class ServerControl {
 
     public ServerControl() throws Exception {
         //sua pass
-//        getDBConnection("pikachu", "root", "root");
-        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        getDBConnection("pikachu", "root", "root");
+//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
 
         openServer(serverPort);
         while (true) {
@@ -41,11 +42,11 @@ public class ServerControl {
     private void getDBConnection(String dbName, String username,
             String password) throws Exception {
         //sua cong
-//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
-        try {
+        try {   
             Class.forName(dbClass);
             con = DriverManager.getConnection(dbUrl,
                     username, password);
@@ -133,6 +134,15 @@ public class ServerControl {
                     }
                 }
             }
+            
+//            // create new game
+//            if (o instanceof String){
+//                String createNewGame = (String)o;
+//                if(createNewGame.equalsIgnoreCase("!NewGame")){
+//                    oos.writeObject(createNewGame());
+//                    
+//                }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,5 +271,18 @@ public class ServerControl {
         }
         return ul;
     }
+    
+//    private String createNewGame(){
+//        Algorithm algorithm = new Algorithm(12, 12);
+//        int[][] matrix = algorithm.getMatrix();
+//        String matrixLine = "";
+//        for (int row = 0; row < matrix.length; row++) {
+//            for (int col = 0; col < matrix[row].length; col++) {
+//                matrixLine += matrix[row][col] + ",";
+//            }
+//        }
+//        System.out.println(matrixLine);
+//        return matrixLine;
+//    }
 
 }

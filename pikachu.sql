@@ -24,7 +24,6 @@ CREATE TABLE game_detail (
     FOREIGN KEY (IDGame) REFERENCES game (ID),
     FOREIGN KEY (IDPlayer) REFERENCES user (ID)
 );
-
 INSERT INTO user VALUES
 ('1', 'Đạt', 'deng126', '123456', 0, 0),
 ('2', 'Đức', 'ducnguyen46', '654321', 0, 0),
@@ -92,3 +91,4 @@ WHERE user.ID = game_detail.IDPlayer
 	AND game_detail.IDGame = game.ID
     AND game_detail.Point = '1'
 GROUP BY username
+
