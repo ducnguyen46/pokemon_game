@@ -32,11 +32,7 @@ public class User implements Serializable{
         this.score = score;
         this.state = state;
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> fdfb7882b90323671ea4251528ffbe22fb8e6505
     public User(int id, String name, String username, String password, double score, int state) {
         this.id = id;
         this.name = name;

@@ -17,13 +17,8 @@ public class ClientControl {
 
     //public ArrayList<User> a = new ArrayList<>();
     private Socket mySocket;
-<<<<<<< HEAD
-//    private String serverHost = "192.168.43.215";
+//    private String serverHost = "192.168.43.88";
     private String serverHost = "localhost";
-=======
-    private String serverHost = "192.168.43.88";
-//    private String serverHost = "localhost";
->>>>>>> fdfb7882b90323671ea4251528ffbe22fb8e6505
 
     private int serverPort = 9876;
 
