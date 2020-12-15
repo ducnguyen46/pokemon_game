@@ -22,36 +22,33 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerControl {
+public class ServerControl implements Runnable {
 
     private Connection con;
-    private ServerSocket myServer;
-    private final int serverPort = 9876;
-
-    //
     private Socket clientSocket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     boolean serverRunning;
 
-    public ServerControl() throws Exception {
+    public ServerControl(Socket clientSocket) {
+        this.clientSocket = clientSocket;
+        
         //sua pass
 //        getDBConnection("pikachu", "root", "root");
         getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        openServer();
+        serverRunning = true;
 
-        try {
-            openServer(serverPort);
-            serverRunning = true;
-            while (serverRunning) {
-                listening();
-            }
-        } catch (Exception e) {
-            System.out.println("Khong chay a?");
+    }
+
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted() && serverRunning) {
+            listening();
         }
     }
 
-    private void getDBConnection(String dbName, String username,
-            String password) throws Exception {
+    private void getDBConnection(String dbName, String username, String password) {
         //sua cong
 //        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
         String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
@@ -59,18 +56,15 @@ public class ServerControl {
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
             Class.forName(dbClass);
-            con = DriverManager.getConnection(dbUrl,
-                    username, password);
-        } catch (Exception e) {
+            con = DriverManager.getConnection(dbUrl, username, password);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Không kết nối được với CSDL");
             e.printStackTrace();
         }
     }
 
-    private void openServer(int portNumber) {
+    private void openServer() {
         try {
-            myServer = new ServerSocket(portNumber);
-            clientSocket = myServer.accept();
-            System.out.println(clientSocket.getInetAddress());
             ois = new ObjectInputStream(clientSocket.getInputStream());
             oos = new ObjectOutputStream(clientSocket.getOutputStream());
 
@@ -141,7 +135,7 @@ public class ServerControl {
                     if (logOutObject instanceof User) {
                         User logOutUser = (User) logOutObject;
                         boolean kq = logOut(logOutUser);
-                        
+
                     }
                 }
             }
@@ -241,7 +235,7 @@ public class ServerControl {
                 ois.close();
                 oos.close();
                 clientSocket.close();
-                myServer.close();
+//                myServer.close();
                 System.out.println("Server Control - user logout");
                 serverRunning = false;
                 return true;

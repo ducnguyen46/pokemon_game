@@ -9,7 +9,8 @@ import View.ServerView;
 
 public class ServerRun {
 
-    public static void main(String[] args) throws Exception {
-        ServerView view = new ServerView();
+    public static void main(String[] args){
+        Thread serverViewThread = new Thread(new ServerView());
+        serverViewThread.start();
     }
 }
