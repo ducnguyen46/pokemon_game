@@ -36,8 +36,8 @@ public class ServerControl {
 
     public ServerControl() throws Exception {
         //sua pass
-        getDBConnection("pikachu", "root", "root");
-//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+//        getDBConnection("pikachu", "root", "root");
+        getDBConnection("pikachu", "root", "Dangtiendat1999!");
 
         try {
             openServer(serverPort);
@@ -53,8 +53,8 @@ public class ServerControl {
     private void getDBConnection(String dbName, String username,
             String password) throws Exception {
         //sua cong
-        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
