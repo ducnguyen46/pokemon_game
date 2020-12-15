@@ -17,10 +17,14 @@ public class ClientControl {
 
     //public ArrayList<User> a = new ArrayList<>();
     private Socket mySocket;
-//    private String serverHost = "192.168.43.88";
+//    private String serverHost = "192.168.43.215";
     private String serverHost = "localhost";
 
     private int serverPort = 9876;
+
+    //
+    ObjectOutputStream oos;
+    ObjectInputStream ois;
 
     public ClientControl() {
     }
@@ -28,7 +32,9 @@ public class ClientControl {
     public Socket openConnection() {
         try {
             mySocket = new Socket(serverHost, serverPort);
-        } catch (Exception ex) {
+            oos = new ObjectOutputStream(mySocket.getOutputStream());
+            ois = new ObjectInputStream(mySocket.getInputStream());
+        } catch (IOException ex) {
             ex.printStackTrace();
             return null;
         }
@@ -38,8 +44,6 @@ public class ClientControl {
     public boolean checkLogin(User user) {
         try {
             //send data
-            ObjectOutputStream oos
-                    = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(new String("!login"));
             new Thread().sleep(500);
             oos.writeObject(user);
@@ -47,8 +51,6 @@ public class ClientControl {
             System.out.println("user gửi đi: " + user.toString());
 
             // recieve data
-            ObjectInputStream ois
-                    = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             if (o instanceof User) {
                 User resultUser = (User) o;
@@ -74,8 +76,6 @@ public class ClientControl {
     public boolean signUp(User user) {
         try {
             //send data
-            ObjectOutputStream oos
-                    = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(new String("!signUp"));
             new Thread().sleep(500);
             oos.writeObject(user);
@@ -83,8 +83,6 @@ public class ClientControl {
             System.out.println("user gửi đi: " + user.toString());
 
             // recieve data
-            ObjectInputStream ois
-                    = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             if (o instanceof String) {
                 String kq = (String) o;
@@ -107,13 +105,9 @@ public class ClientControl {
         ArrayList<User> kq = null;
         try {
             //send data
-            ObjectOutputStream oos
-                    = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(new String("!sendOnlineList"));
             oos.writeObject(user);
             // recieve data
-            ObjectInputStream ois
-                    = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             if (o instanceof ArrayList) {
                 kq = (ArrayList<User>) o;
@@ -128,8 +122,6 @@ public class ClientControl {
     public boolean logOut(User user) {
         try {
             //send data
-            ObjectOutputStream oos
-                    = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(new String("!logout"));
             new Thread().sleep(500);
             oos.writeObject(user);
@@ -137,8 +129,6 @@ public class ClientControl {
             System.out.println("user gửi đi-logout: " + user.toString());
 
             // recieve data
-            ObjectInputStream ois
-                    = new ObjectInputStream(mySocket.getInputStream());
             Object o = ois.readObject();
             if (o instanceof String) {
                 String kq = (String) o;
@@ -156,22 +146,18 @@ public class ClientControl {
         }
         return false;
     }
-    
-    public Algorithm createNewGame(){
+
+    public Algorithm createNewGame() {
         Algorithm algorithm = null;
         try {
             //send data
-            ObjectOutputStream oos
-                    = new ObjectOutputStream(mySocket.getOutputStream());
             oos.writeObject(new String("!NewGame"));
             // recieve data
-            
-            ObjectInputStream ois
-                    = new ObjectInputStream(mySocket.getInputStream());
+
             Object o = ois.readObject();
             if (o instanceof Algorithm) {
-                algorithm = (Algorithm)o;
-                
+                algorithm = (Algorithm) o;
+
             }
         } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
@@ -181,6 +167,8 @@ public class ClientControl {
 
     public boolean closeConnection() {
         try {
+            ois.close();
+            oos.close();
             mySocket.close();
         } catch (Exception ex) {
             ex.printStackTrace();

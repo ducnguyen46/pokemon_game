@@ -28,6 +28,11 @@ public class ServerControl {
     private ServerSocket myServer;
     private final int serverPort = 9876;
 
+    //
+    private Socket clientSocket;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+
     public ServerControl() throws Exception {
         //sua pass
 //        getDBConnection("pikachu", "root", "root");
@@ -46,7 +51,7 @@ public class ServerControl {
         String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
-        try {   
+        try {
             Class.forName(dbClass);
             con = DriverManager.getConnection(dbUrl,
                     username, password);
@@ -57,8 +62,11 @@ public class ServerControl {
 
     private void openServer(int portNumber) {
         try {
+            clientSocket = myServer.accept();
             myServer = new ServerSocket(portNumber);
-            
+            ois = new ObjectInputStream(clientSocket.getInputStream());
+            oos = new ObjectOutputStream(clientSocket.getOutputStream());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,9 +74,6 @@ public class ServerControl {
 
     private void listening() {
         try {
-            Socket stuSocket = myServer.accept();
-            ObjectInputStream ois = new ObjectInputStream(stuSocket.getInputStream());
-            ObjectOutputStream oos = new ObjectOutputStream(stuSocket.getOutputStream());
             Object o = ois.readObject();
 
             if (o instanceof String) {
@@ -135,14 +140,14 @@ public class ServerControl {
                     }
                 }
             }
-            
+
 //            // create new game
-            if (o instanceof String){
-                String createNewGame = (String)o;
-                if(createNewGame.equalsIgnoreCase("!NewGame")){
+            if (o instanceof String) {
+                String createNewGame = (String) o;
+                if (createNewGame.equalsIgnoreCase("!NewGame")) {
                     Algorithm algorithm = new Algorithm(12, 12);
                     oos.writeObject(algorithm);
-                    
+
                 }
             }
 
@@ -226,8 +231,17 @@ public class ServerControl {
 
     private boolean logOut(User user) {
         if (updateStateLogOut(user)) {
-            System.out.println("Server Control - user logout");
-            return true;
+            try {
+                System.out.println("Server Control - user logout");
+                ois.close();
+                oos.close();
+                clientSocket.close();
+                myServer.close();
+                
+                return true;
+            } catch (IOException ex) {
+                Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
@@ -273,8 +287,8 @@ public class ServerControl {
         }
         return ul;
     }
-    
-    private String createNewGame(){
+
+    private String createNewGame() {
         Algorithm algorithm = new Algorithm(12, 12);
         int[][] matrix = algorithm.getMatrix();
         String matrixLine = "";

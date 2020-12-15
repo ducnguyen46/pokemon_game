@@ -55,7 +55,7 @@ INSERT INTO game_detail VALUES
 ('7','5','1');
 
 SELECT username, score, state FROM user WHERE state != 0 and username != 'deng126';
-SELECT username, score, state FROM user WHERE state != 0 AND username != ?;
+-- SELECT username, score, state FROM user WHERE state != 0 AND username != ?;
 update user set score=2.5 where id=1;
 update user set score=2.5 where id=2;
 update user set score=0 where id=3;

@@ -11,6 +11,8 @@ import Game.MyMain;
 import Model.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -33,6 +35,7 @@ public class ClientView extends javax.swing.JFrame {
         initComponents();
         initTable();
         loadOnlineList();
+
     }
 
     private void initTable() {
@@ -45,6 +48,7 @@ public class ClientView extends javax.swing.JFrame {
         ClientControl clientCtrl = new ClientControl();
         clientCtrl.openConnection();
         ArrayList<User> a = clientCtrl.loadOnlineList(user);
+
         if (a != null) {
             tmOnline.setRowCount(0);
             System.out.println(a.size());
@@ -187,7 +191,7 @@ public class ClientView extends javax.swing.JFrame {
 
         clientCtrl.closeConnection();
     }
-    
+
     private void tblOnlineListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOnlineListMouseClicked
         int row = tblOnlineList.getSelectedRow();
         user1.setName(tmOnline.getValueAt(row, 0).toString());
