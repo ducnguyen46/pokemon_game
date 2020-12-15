@@ -1,6 +1,7 @@
+DROP DATABASE IF EXISTS pikachu;
 CREATE DATABASE pikachu;
 use pikachu;
-#DROP DATABASE pikachu;
+
 
 CREATE TABLE user (
     ID INT PRIMARY KEY AUTO_INCREMENT,

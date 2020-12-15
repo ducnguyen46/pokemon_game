@@ -15,10 +15,10 @@ import javax.swing.JOptionPane;
  */
 public class LoginView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LoginView
-     */
-    public LoginView() {
+    private ClientControl clientControl;
+    
+    public LoginView(ClientControl clientControl) {
+        this.clientControl = clientControl;
         initComponents();
     }
 
@@ -113,19 +113,17 @@ public class LoginView extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         User user = new User(txtUsername.getText().trim(), txtPassword.getText());
-        ClientControl clientControl = new ClientControl();
-        clientControl.openConnection();
         boolean result = clientControl.checkLogin(user);
         if (result) {
             System.out.println(user.toString());
             System.out.println("Đăng nhập thành công!");
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-            new ClientView(user).setVisible(true);
             this.dispose();
+            new ClientView(clientControl, user).setVisible(true);
+            
         } else {
             JOptionPane.showMessageDialog(this, "Tài khoản/Mật khẩu không chính xác!");
         }
-        clientControl.closeConnection();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed

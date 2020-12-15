@@ -32,23 +32,29 @@ public class ServerControl {
     private Socket clientSocket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
+    boolean serverRunning;
 
     public ServerControl() throws Exception {
         //sua pass
-//        getDBConnection("pikachu", "root", "root");
-        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        getDBConnection("pikachu", "root", "root");
+//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
 
-        openServer(serverPort);
-        while (true) {
-            listening();
+        try {
+            openServer(serverPort);
+            serverRunning = true;
+            while (serverRunning) {
+                listening();
+            }
+        } catch (Exception e) {
+            System.out.println("Khong chay a?");
         }
     }
 
     private void getDBConnection(String dbName, String username,
             String password) throws Exception {
         //sua cong
-//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
@@ -62,17 +68,20 @@ public class ServerControl {
 
     private void openServer(int portNumber) {
         try {
-            clientSocket = myServer.accept();
             myServer = new ServerSocket(portNumber);
+            clientSocket = myServer.accept();
+            System.out.println(clientSocket.getInetAddress());
             ois = new ObjectInputStream(clientSocket.getInputStream());
             oos = new ObjectOutputStream(clientSocket.getOutputStream());
 
         } catch (IOException e) {
+            System.out.println("Khong tao duoc server");
             e.printStackTrace();
         }
     }
 
     private void listening() {
+        System.out.println("run run");
         try {
             Object o = ois.readObject();
 
@@ -132,11 +141,7 @@ public class ServerControl {
                     if (logOutObject instanceof User) {
                         User logOutUser = (User) logOutObject;
                         boolean kq = logOut(logOutUser);
-                        if (kq) {
-                            oos.writeObject(new String("LogOutOK"));
-                        } else {
-                            oos.writeObject(new String("logOutNotOK"));
-                        }
+                        
                     }
                 }
             }
@@ -151,7 +156,7 @@ public class ServerControl {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -232,15 +237,21 @@ public class ServerControl {
     private boolean logOut(User user) {
         if (updateStateLogOut(user)) {
             try {
-                System.out.println("Server Control - user logout");
+                oos.writeObject(new String("logOutOK"));
                 ois.close();
                 oos.close();
                 clientSocket.close();
                 myServer.close();
-                
+                System.out.println("Server Control - user logout");
+                serverRunning = false;
                 return true;
             } catch (IOException ex) {
-                Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    oos.writeObject(new String("logOutNotOK"));
+                    Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex1) {
+                    Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             }
         }
         return false;

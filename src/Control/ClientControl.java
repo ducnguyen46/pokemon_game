@@ -132,9 +132,9 @@ public class ClientControl {
             Object o = ois.readObject();
             if (o instanceof String) {
                 String kq = (String) o;
-                if (kq.equalsIgnoreCase("LogOutOK")) {
+                if (kq.equalsIgnoreCase("logOutOK")) {
                     return true;
-                } else if (kq.equalsIgnoreCase("LogOutNotOK")) {
+                } else if (kq.equalsIgnoreCase("logOutNotOK")) {
                     return false;
                 }
             }

@@ -5,6 +5,7 @@
  */
 package TCPRun;
 
+import Control.ClientControl;
 import View.LoginView;
 
 /**
@@ -14,7 +15,9 @@ import View.LoginView;
 public class ClientRun {
 
     public static void main(String[] args) {
-        LoginView view = new LoginView();
+        ClientControl clientControl = new ClientControl();
+        clientControl.openConnection();
+        LoginView view = new LoginView(clientControl);
         view.setVisible(true);
     }
 }

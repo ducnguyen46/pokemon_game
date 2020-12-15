@@ -9,6 +9,7 @@ import Control.ClientControl;
 import Game.Algorithm;
 import Game.MyMain;
 import Model.User;
+import TCPRun.ClientRun;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,11 +27,13 @@ public class ClientView extends javax.swing.JFrame {
 
     private User user, user1;
     private DefaultTableModel tmOnline;
+    private ClientControl clientControl;
 
     /**
      * Creates new form ClientView
      */
-    public ClientView(User user) {
+    public ClientView(ClientControl clientControl, User user) {
+        this.clientControl = clientControl;
         this.user = user;
         initComponents();
         initTable();
@@ -45,9 +48,7 @@ public class ClientView extends javax.swing.JFrame {
     }
 
     private void loadOnlineList() {
-        ClientControl clientCtrl = new ClientControl();
-        clientCtrl.openConnection();
-        ArrayList<User> a = clientCtrl.loadOnlineList(user);
+        ArrayList<User> a = clientControl.loadOnlineList(user);
 
         if (a != null) {
             tmOnline.setRowCount(0);
@@ -56,7 +57,6 @@ public class ClientView extends javax.swing.JFrame {
         for (User i : a) {
             tmOnline.addRow(i.toObject());
         }
-        clientCtrl.closeConnection();
     }
 
     public ArrayList<Integer> getString() {
@@ -162,21 +162,19 @@ public class ClientView extends javax.swing.JFrame {
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         //thay đổi state trước
-        ClientControl clientCtrl = new ClientControl();
-        clientCtrl.openConnection();
-        boolean rs = clientCtrl.logOut(user);
+        boolean rs = clientControl.logOut(user);
         if (rs) {
             JOptionPane.showMessageDialog(this, "Đã thoát");
             // đóng kết nối
-            new LoginView().setVisible(true);
+            clientControl.closeConnection();
+            new ClientRun();
         } else {
             JOptionPane.showMessageDialog(this, "Chưa thoát được rồi,"
                     + " ở lại chơi thêm với chúng mình!");
         }
         //
-        clientCtrl.closeConnection();
+
         this.dispose();
-        new LoginView().setVisible(true);
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {
