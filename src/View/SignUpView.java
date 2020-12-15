@@ -14,11 +14,12 @@ import javax.swing.JOptionPane;
  * @author nguye
  */
 public class SignUpView extends javax.swing.JFrame {
-
+    private ClientControl clientControl;
     /**
      * Creates new form SignUpView
      */
-    public SignUpView() {
+    public SignUpView(ClientControl clientControl) {
+        this.clientControl = clientControl;
         initComponents();
     }
 
@@ -127,9 +128,7 @@ public class SignUpView extends javax.swing.JFrame {
         user.setName(txtName.getText());
         user.setUsername(txtUsername.getText());
         user.setPassword(txtPassword.getText());
-        ClientControl clientControl = new ClientControl();
-        clientControl.openConnection();
-
+        
         boolean kq = clientControl.signUp(user);
         if (kq) {
             JOptionPane.showMessageDialog(this, "Đăng kí thành công");
@@ -137,7 +136,7 @@ public class SignUpView extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Lỗi: Tên đăng nhập bị trùng");
         }
-        clientControl.closeConnection();
+        
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed

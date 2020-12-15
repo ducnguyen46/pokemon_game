@@ -127,7 +127,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        new SignUpView().setVisible(true);
+        new SignUpView(clientControl).setVisible(true);
     }//GEN-LAST:event_btnRegisterActionPerformed
 
 
