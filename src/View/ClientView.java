@@ -79,7 +79,6 @@ public class ClientView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnLogOut = new javax.swing.JButton();
         btnInvite = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,11 +134,9 @@ public class ClientView extends javax.swing.JFrame {
         });
 
         btnInvite.setText("Invite");
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnInvite.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnInviteActionPerformed(evt);
             }
         });
 
@@ -157,11 +154,9 @@ public class ClientView extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnRanking, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                        .addComponent(btnInvite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnRanking, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(btnInvite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -177,9 +172,7 @@ public class ClientView extends javax.swing.JFrame {
                         .addComponent(btnInvite)
                         .addGap(18, 18, 18)
                         .addComponent(btnRanking)
-                        .addGap(38, 38, 38)
-                        .addComponent(jButton1)
-                        .addContainerGap(320, Short.MAX_VALUE))
+                        .addContainerGap(381, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(26, 26, 26))))
@@ -215,6 +208,11 @@ public class ClientView extends javax.swing.JFrame {
     }//GEN-LAST:event_tblOnlineListMouseClicked
 
     private void btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankingActionPerformed
+        new RankingView(clientControl).setVisible(true);
+        
+    }//GEN-LAST:event_btnRankingActionPerformed
+
+    private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInviteActionPerformed
         if (user1 == null) {
             JOptionPane.showMessageDialog(this, "Trước tiên, hãy chọn đối thủ của bạn");
         } else {
@@ -226,18 +224,15 @@ public class ClientView extends javax.swing.JFrame {
                 clientControl.sendRequest(user, user1);
             }
         }
-    }//GEN-LAST:event_btnRankingActionPerformed
+    }//GEN-LAST:event_btnInviteActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        loadOnlineList();
-    }//GEN-LAST:event_jButton1ActionPerformed
+                                             
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInvite;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnRanking;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblOnlineList;

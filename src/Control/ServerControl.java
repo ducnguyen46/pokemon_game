@@ -19,7 +19,9 @@ import java.sql.Statement;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -121,6 +123,36 @@ public class ServerControl implements Runnable {
                     }
                 }
 
+            }
+
+            if (o instanceof String) {
+                String request = (String) o;
+                System.out.println(request);
+
+                //xep hang tong diem
+                if (request.equalsIgnoreCase("!sendRankingScore")) {
+                    oos.writeObject(loadRankingScore());
+                }
+            }
+
+            if (o instanceof String) {
+                String request = (String) o;
+                System.out.println(request);
+
+                //xep hang trung binh diem doi thu
+                if (request.equalsIgnoreCase("!sendRankingAvgScore")) {
+                    oos.writeObject(loadRankingAvgScore());
+                }
+            }
+            
+            if (o instanceof String) {
+                String request = (String) o;
+                System.out.println(request);
+
+                //xep hang trung binh thoi gian thang
+                if (request.equalsIgnoreCase("!sendRankingAvgTime")) {
+                    oos.writeObject(loadRankingAvgTime());
+                }
             }
 
             if (o instanceof String) {
@@ -319,6 +351,93 @@ public class ServerControl implements Runnable {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ul;
+    }
+
+    private ArrayList loadRankingScore() {
+        ArrayList rscr = new ArrayList<>();
+        String sql = "SELECT username, score FROM user ORDER BY score DESC";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    double score = rs.getDouble("score");
+
+                    rscr.add(new User(username, score));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rscr;
+    }
+
+    private ArrayList loadRankingAvgScore() {
+        ArrayList rscr = new ArrayList<>();
+        String sql = "SELECT a.username, AVG(b.score) AS dtb FROM user a, user b WHERE a.ID = ? AND b.ID IN ("
+                + "	SELECT IDPlayer FROM game_detail"
+                + "	WHERE IDGame IN (SELECT IDGame FROM game_detail WHERE IDPlayer = ?)"
+                + "						AND IDPlayer != ?"
+                + "	GROUP BY IDPlayer)";
+        String sql_1 = "SELECT COUNT(*) AS num_user FROM user";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps_1 = con.prepareStatement(sql_1);
+            ResultSet rs_1 = ps_1.executeQuery();
+            rs_1.next();
+            int cnt = rs_1.getInt("num_user");
+            int i = 1;
+            while (i <= cnt) {
+                ps.setInt(1, i);
+                ps.setInt(2, i);
+                ps.setInt(3, i);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs != null) {
+                    while (rs.next()) {
+                        String username = rs.getString("username");
+                        double score = rs.getDouble("dtb");
+
+                        rscr.add(new User(username, score));
+                    }
+                }
+                i++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rscr;
+    }
+
+    private ArrayList loadRankingAvgTime() {
+        ArrayList rscr = new ArrayList<>();
+        String sql = "SELECT username, SEC_TO_TIME(AVG(TIME_TO_SEC(timefinish))) AS tgtb"
+                + " FROM user, game_detail, game"
+                + " WHERE user.ID = game_detail.IDPlayer AND game_detail.IDGame = game.ID AND game_detail.Point = '1'"
+                + " GROUP BY username"
+                + " ORDER BY TGTB";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    Time timeFinish = rs.getTime("tgtb");
+                    Vector v = new Vector();
+                    v.add(username);
+                    v.add(timeFinish);                           
+                    rscr.add(v);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rscr;
     }
 
     private String createNewGame() {
