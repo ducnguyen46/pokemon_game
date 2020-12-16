@@ -78,12 +78,12 @@ SELECT username FROM user, game_detail
 WHERE game_detail.IDPlayer = user.ID
 ORDER BY score DESC
 ;
-SELECT AVG(SCORE) AS DTB FROM user WHERE ID IN (
+SELECT a.username, AVG(b.SCORE) AS DTB FROM user a, user b WHERE a.ID = 1 AND b.ID IN (
 	SELECT IDPlayer FROM game_detail
 	WHERE IDGame IN (SELECT IDGame FROM game_detail WHERE IDPlayer = 1)
 						AND IDPlayer != 1
 	GROUP BY IDPlayer);
-
+SELECT COUNT(*) FROM user;
 SELECT * FROM pikachu.game;
 SELECT * FROM pikachu.game_detail;    
 SELECT time_to_sec(TimeFinish) FROM game;

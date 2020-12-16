@@ -121,6 +121,11 @@ public class ClientView extends javax.swing.JFrame {
         btnInvite.setText("Invite");
 
         btnRanking.setText("Ranking");
+        btnRanking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRankingActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("PIKACHU");
@@ -209,6 +214,10 @@ public class ClientView extends javax.swing.JFrame {
         user1 = new User();
         user1.setName(tmOnline.getValueAt(row, 0).toString());
     }//GEN-LAST:event_tblOnlineListMouseClicked
+
+    private void btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankingActionPerformed
+        new RankingView(clientControl).setVisible(true);
+    }//GEN-LAST:event_btnRankingActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

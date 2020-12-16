@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,7 +119,58 @@ public class ClientControl {
         }
         return kq;
     }
+    
+    public ArrayList<User> loadRanking_Score() {
+        ArrayList<User> kq = null;
+        try {
+            //send data
+            oos.writeObject(new String("!sendRankingScore"));
+            // recieve data
+            Object o = ois.readObject();
+            if (o instanceof ArrayList) {
+                kq = (ArrayList<User>) o;
 
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return kq;
+    }
+    
+    public ArrayList<User> loadRanking_AvgScore() {
+        ArrayList<User> kq = null;
+        try {
+            //send data
+            oos.writeObject(new String("!sendRankingAvgScore"));
+            // recieve data
+            Object o = ois.readObject();
+            if (o instanceof ArrayList) {
+                kq = (ArrayList<User>) o;
+
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return kq;
+    }
+
+    public ArrayList<Vector> loadRanking_AvgTime() {
+        ArrayList<Vector> kq = null;
+        try {
+            //send data
+            oos.writeObject(new String("!sendRankingAvgTime"));
+            // recieve data
+            Object o = ois.readObject();
+            if (o instanceof ArrayList) {
+                kq = (ArrayList<Vector>) o;
+
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return kq;
+    }
+    
     public boolean logOut(User user) {
         try {
             //send data
