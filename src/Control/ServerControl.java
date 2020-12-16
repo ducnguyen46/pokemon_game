@@ -40,8 +40,8 @@ public class ServerControl implements Runnable {
         this.clientSocket = clientSocket;
 
         //sua pass
-//        getDBConnection("pikachu", "root", "root");
-        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        getDBConnection("pikachu", "root", "root");
+//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
         openServer();
         serverRunning = true;
 
@@ -57,8 +57,8 @@ public class ServerControl implements Runnable {
 
     private void getDBConnection(String dbName, String username, String password) {
         //sua cong
-//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
@@ -204,6 +204,12 @@ public class ServerControl implements Runnable {
                     
                     ObjectOutputStream oosUserInvite = ServerView.userMap.get(userInvite.getUsername());
                     oosUserInvite.writeObject("!invite-accept");
+                    
+                    Algorithm algorithm = new Algorithm(12, 12);
+                    oos.writeObject("!startGame");
+                    oos.writeObject(algorithm);
+                    oosUserInvite.writeObject("!startGame");
+                    oosUserInvite.writeObject(algorithm);
                 }
             }
             
@@ -212,13 +218,13 @@ public class ServerControl implements Runnable {
                 String denyInvition= (String) o;
                 if(denyInvition.equalsIgnoreCase("!invite-accept")){
                     oos.writeObject("!invite-accept");
-                    Algorithm algorithm = new Algorithm(12, 12);
-                    
-                    oosUser1.writeObject("!startGame");
-                    oosUser1.writeObject(algorithm);
-                    
-                    oos.writeObject("!startGame");
-                    oos.writeObject(algorithm);
+//                    Algorithm algorithm = new Algorithm(12, 12);
+//                    
+//                    oosUser1.writeObject("!startGame");
+//                    oosUser1.writeObject(algorithm);
+//                    System.out.println("");
+//                    oos.writeObject("!startGame");
+//                    oos.writeObject(algorithm);
                 }
             }
             
