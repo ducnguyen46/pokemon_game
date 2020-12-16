@@ -38,21 +38,27 @@ public class RankingView extends javax.swing.JFrame {
         tmScore = new DefaultTableModel(cols, 0);
         tblRanking.setModel(tmScore);
     }
-    
+
     private void loadRanking1() {
         ArrayList<User> a = clientControl.loadRanking_Score();
 
-        int rank=1;
+        int rank = 1;
         if (a != null) {
             tmScore.setRowCount(0);
             System.out.println(a.size());
+            for (User i : a) {
+                String username = i.getUsername();
+                Double score = i.getScore();
+                tmScore.addRow(new Object[]{rank, username, score});
+                rank++;
+            }
         }
-        for (User i : a) {
-            String username = i.getUsername();
-            Double score = i.getScore();
-            tmScore.addRow(new Object[]{rank, username, score});
-            rank++;
-        }
+for (User i : a) {
+                String username = i.getUsername();
+                Double score = i.getScore();
+                tmScore.addRow(new Object[]{rank, username, score});
+                rank++;
+            }
     }
 
     private void initTable2() {
@@ -60,21 +66,22 @@ public class RankingView extends javax.swing.JFrame {
         tmAvgScore = new DefaultTableModel(cols, 0);
         tblRanking.setModel(tmAvgScore);
     }
-    
+
     private void loadRanking2() {
         ArrayList<User> a = clientControl.loadRanking_AvgScore();
 
         Collections.sort(a, Comparator.comparing(User::getScore).reversed());
-        int rank=1;
+        int rank = 1;
         if (a != null) {
             tmAvgScore.setRowCount(0);
             System.out.println(a.size());
-        }
-        for (User i : a) {
-            String username = i.getUsername();
-            Double score = i.getScore();
-            tmAvgScore.addRow(new Object[]{rank, username, score});
-            rank++;
+            for (User i : a) {
+                String username = i.getUsername();
+                Double score = i.getScore();
+                tmAvgScore.addRow(new Object[]{rank, username, score});
+                rank++;
+            }
+
         }
     }
 
@@ -83,22 +90,23 @@ public class RankingView extends javax.swing.JFrame {
         tmTime = new DefaultTableModel(cols, 0);
         tblRanking.setModel(tmTime);
     }
-    
+
     private void loadRanking3() {
         ArrayList<Vector> a = clientControl.loadRanking_AvgTime();
 
-        int rank=1;
+        int rank = 1;
         if (a != null) {
             tmTime.setRowCount(0);
             System.out.println(a.size());
+            for (Vector i : a) {
+                String username = i.get(0).toString();
+                String time = i.get(1).toString();
+                Time.valueOf(time);
+                tmTime.addRow(new Object[]{rank, username, time});
+                rank++;
+            }
         }
-        for (Vector i : a) {
-            String username = i.get(0).toString();
-            String time = i.get(1).toString();
-            Time.valueOf(time);
-            tmTime.addRow(new Object[]{rank, username, time});
-            rank++;
-        }
+
     }
 
     /**
