@@ -6,6 +6,8 @@
 package View;
 
 import Control.ClientControl;
+import Game.Algorithm;
+import Game.MyMain;
 import Model.User;
 import TCPRun.ClientRun;
 import java.io.IOException;
@@ -185,12 +187,12 @@ public class ClientView extends javax.swing.JFrame {
         //thay đổi state trước
         boolean rs = clientControl.logOut(user);
         if (rs) {
-            JOptionPane.showMessageDialog(this, "Đã thoát");
+            showMessageDialog("Đã thoát");
             // đóng kết nối
             clientControl.closeConnection();
-            new ClientRun();
+//            new ClientRun();
         } else {
-            JOptionPane.showMessageDialog(this, "Chưa thoát được rồi,"
+            showMessageDialog("Chưa thoát được rồi,"
                     + " ở lại chơi thêm với chúng mình!");
         }
         //
@@ -214,19 +216,26 @@ public class ClientView extends javax.swing.JFrame {
 
     private void btnInviteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInviteActionPerformed
         if (user1 == null) {
-            JOptionPane.showMessageDialog(this, "Trước tiên, hãy chọn đối thủ của bạn");
+            showMessageDialog("Trước tiên, hãy chọn đối thủ của bạn");
         } else {
             if (user1.getState() == 2) {
-                JOptionPane.showMessageDialog(this, "Đối thủ của bạn đang bận");
+                showMessageDialog("Đối thủ của bạn đang bận");
             } else {
                 ObjectOutputStream oosUser1 = null;
-                JOptionPane.showMessageDialog(this, "Hãy đợi chúng tôi gửi lời thách đấu đến " + user1.getUsername() + "!");
+                showMessageDialog("Hãy đợi chúng tôi gửi lời thách đấu đến " + user1.getUsername() + "!");
                 clientControl.sendRequest(user, user1);
             }
         }
     }//GEN-LAST:event_btnInviteActionPerformed
 
-                                             
+    public void showMessageDialog(String mes){
+        JOptionPane.showMessageDialog(this, mes);
+    }
+    
+    public void showGame(Algorithm algorithm){
+        System.out.println("chay game");
+        new MyMain(algorithm);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

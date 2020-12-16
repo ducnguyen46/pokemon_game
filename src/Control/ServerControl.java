@@ -10,12 +10,10 @@ import View.ServerView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,8 +40,8 @@ public class ServerControl implements Runnable {
         this.clientSocket = clientSocket;
 
         //sua pass
-//        getDBConnection("pikachu", "root", "root");
-        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+        getDBConnection("pikachu", "root", "root");
+//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
         openServer();
         serverRunning = true;
 
@@ -52,14 +50,15 @@ public class ServerControl implements Runnable {
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted() && serverRunning) {
+            System.out.println("thread main server");
             listening();
         }
     }
 
     private void getDBConnection(String dbName, String username, String password) {
         //sua cong
-//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
@@ -67,7 +66,6 @@ public class ServerControl implements Runnable {
             con = DriverManager.getConnection(dbUrl, username, password);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Không kết nối được với CSDL");
-            e.printStackTrace();
         }
     }
 
@@ -86,7 +84,6 @@ public class ServerControl implements Runnable {
         System.out.println("run run");
         try {
             Object o = ois.readObject();
-
             if (o instanceof String) {
                 String request = (String) o;
 
@@ -182,7 +179,7 @@ public class ServerControl implements Runnable {
                     }
                 }
             }
-
+            //moi nguoi choi
             if (o instanceof String) {
                 String invitePlayer = (String) o;
                 if (invitePlayer.equalsIgnoreCase("!invitePlayer")) {
@@ -195,6 +192,54 @@ public class ServerControl implements Runnable {
                     oosUser1 = ServerView.userMap.get(user1.getUsername());
                     oosUser1.writeObject("!invited");
                     oosUser1.writeObject(user);
+                }
+            }
+            
+            //dong y
+            if (o instanceof String){
+                String denyInvite = (String) o;
+                if(denyInvite.equalsIgnoreCase("!acceptInvite")){
+                    Object userInviteObject = ois.readObject();
+                    User userInvite = (User)userInviteObject;
+                    
+                    ObjectOutputStream oosUserInvite = ServerView.userMap.get(userInvite.getUsername());
+                    oosUserInvite.writeObject("!invite-accept");
+                }
+            }
+            
+            //duoc dong y
+            if (o instanceof String){
+                String denyInvition= (String) o;
+                if(denyInvition.equalsIgnoreCase("!invite-accept")){
+                    oos.writeObject("!invite-accept");
+                    Algorithm algorithm = new Algorithm(12, 12);
+                    
+                    oosUser1.writeObject("!startGame");
+                    oosUser1.writeObject(algorithm);
+                    
+                    oos.writeObject("!startGame");
+                    oos.writeObject(algorithm);
+                }
+            }
+            
+            
+            //tu choi
+            if (o instanceof String){
+                String denyInvite = (String) o;
+                if(denyInvite.equalsIgnoreCase("!denyInvite")){
+                    Object userInviteObject = ois.readObject();
+                    User userInvite = (User)userInviteObject;
+                    
+                    ObjectOutputStream oosUserInvite = ServerView.userMap.get(userInvite.getUsername());
+                    oosUserInvite.writeObject("!invite-deny");
+                }
+            }
+            
+            //bi tu choi
+            if (o instanceof String){
+                String denyInvition= (String) o;
+                if(denyInvition.equalsIgnoreCase("!invite-deny")){
+                    oos.writeObject("!invite-deny");
                 }
             }
 
@@ -438,19 +483,6 @@ public class ServerControl implements Runnable {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rscr;
-    }
-
-    private String createNewGame() {
-        Algorithm algorithm = new Algorithm(12, 12);
-        int[][] matrix = algorithm.getMatrix();
-        String matrixLine = "";
-        for (int row = 0; row < matrix.length; row++) {
-            for (int col = 0; col < matrix[row].length; col++) {
-                matrixLine += matrix[row][col] + ",";
-            }
-        }
-        System.out.println(matrixLine);
-        return matrixLine;
     }
 
 }
