@@ -7,6 +7,7 @@ package View;
 
 import Control.ClientControl;
 import Model.User;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**

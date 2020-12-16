@@ -2,6 +2,8 @@ package Control;
 
 import Game.Algorithm;
 import Model.User;
+import View.ClientView;
+import View.InvitePlayer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,19 +17,16 @@ import java.util.logging.Logger;
 
 public class ClientControl {
 
-    //public ArrayList<User> a = new ArrayList<>();
     private Socket mySocket;
 //    private String serverHost = "192.168.43.215";
     private String serverHost = "localhost";
-
     private int serverPort = 9876;
 
-    //
     ObjectOutputStream oos;
     ObjectInputStream ois;
-
-    public ClientControl() {
-    }
+    Thread thread;
+    
+    private ClientView clientView;
 
     public Socket openConnection() {
         try {
@@ -40,12 +39,49 @@ public class ClientControl {
         }
         return mySocket;
     }
+    
+    public void startThread(){
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Thread chay ne");
+                while(true){
+                    receiveInvite();
+                }
+            }
+        });
+        thread.start();
+    }
+    
+    public void receiveInvite(){
+        try {
+            System.out.println("doc 1");
+            Object o = ois.readObject();
+            if(o instanceof String){
+                String request = (String)o;
+                if(request.equalsIgnoreCase("!invited")){
+                    Object userObject = ois.readObject();
+                    if(userObject instanceof User){
+                        User userInvite = (User)userObject;
+                        System.out.println("gui yeu cau tu: "+userInvite.toString());
+                        InvitePlayer dialogInvite = new InvitePlayer(clientView, true);
+                        dialogInvite.setVisible(true);
+                        boolean acceptInvite = dialogInvite.getAccept();
+                        if(acceptInvite){
+                            
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public boolean checkLogin(User user) {
         try {
             //send data
             oos.writeObject(new String("!login"));
-            new Thread().sleep(500);
             oos.writeObject(user);
             //
             System.out.println("user gửi đi: " + user.toString());
@@ -67,8 +103,6 @@ public class ClientControl {
         } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
             return false;
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -113,8 +147,10 @@ public class ClientControl {
                 kq = (ArrayList<User>) o;
 
             }
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return kq;
     }
@@ -146,6 +182,21 @@ public class ClientControl {
         }
         return false;
     }
+    
+    public void sendRequest(User user, User user1){
+        try {
+            ArrayList users = new ArrayList<>();
+            users.add(user);
+            users.add(user1);
+            oos.writeObject("!invitePlayer");
+            oos.writeObject(users);
+            System.out.println(users.toString());
+            
+            } catch (IOException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     public Algorithm createNewGame() {
         Algorithm algorithm = null;
@@ -176,4 +227,11 @@ public class ClientControl {
         }
         return true;
     }
+    
+    
+    //get set
+    public void setClientView(ClientView clientView){
+        this.clientView = clientView;
+    }
+
 }

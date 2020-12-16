@@ -6,6 +6,7 @@ package Control;
  */
 import Game.Algorithm;
 import Model.User;
+import View.ServerView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,12 +31,17 @@ public class ServerControl implements Runnable {
     private ObjectOutputStream oos;
     boolean serverRunning;
 
+    
+    //user 1
+    private ObjectOutputStream oosUser1;
+            
+            
     public ServerControl(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        
+
         //sua pass
-        getDBConnection("pikachu", "root", "root");
-//        getDBConnection("pikachu", "root", "Dangtiendat1999!");
+//        getDBConnection("pikachu", "root", "root");
+        getDBConnection("pikachu", "root", "Dangtiendat1999!");
         openServer();
         serverRunning = true;
 
@@ -50,8 +56,8 @@ public class ServerControl implements Runnable {
 
     private void getDBConnection(String dbName, String username, String password) {
         //sua cong
-        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
-//        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
+//        String dbUrl = "jdbc:mysql://localhost:3307/" + dbName;
+        String dbUrl = "jdbc:mysql://localhost:3306/" + dbName;
 
         String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
@@ -90,7 +96,11 @@ public class ServerControl implements Runnable {
                         if (checkLogin(loginUser)) {
                             oos.writeObject(loginUser);
                             updateStateLogin(loginUser);
-
+                            ServerView.userMap.put(loginUser.getUsername(), oos);
+                            ArrayList<String> list = new ArrayList<>(ServerView.userMap.keySet());
+                            for (String str : list) {
+                                System.out.println(str);
+                            }
                         } else {
                             oos.writeObject(new User(-1, null, null, null, -1, -1));
                         }
@@ -110,6 +120,7 @@ public class ServerControl implements Runnable {
                         oos.writeObject(readDB(loginUser));
                     }
                 }
+
             }
 
             if (o instanceof String) {
@@ -140,7 +151,22 @@ public class ServerControl implements Runnable {
                 }
             }
 
-//            // create new game
+            if (o instanceof String) {
+                String invitePlayer = (String) o;
+                if (invitePlayer.equalsIgnoreCase("!invitePlayer")) {
+                    Object usersObject = ois.readObject();
+                    ArrayList<User> users = (ArrayList<User>) usersObject;
+                    User user = users.get(0);
+                    User user1 = users.get(1);
+                    System.out.println("user nhan duoc server: " + user1.toString());
+
+                    oosUser1 = ServerView.userMap.get(user1.getUsername());
+                    oosUser1.writeObject("!invited");
+                    oosUser1.writeObject(user);
+                }
+            }
+
+            // create new game
             if (o instanceof String) {
                 String createNewGame = (String) o;
                 if (createNewGame.equalsIgnoreCase("!NewGame")) {
@@ -231,12 +257,14 @@ public class ServerControl implements Runnable {
     private boolean logOut(User user) {
         if (updateStateLogOut(user)) {
             try {
+                //remove user in userMap
+                ServerView.userMap.remove(user);
+
                 oos.writeObject(new String("logOutOK"));
                 ois.close();
                 oos.close();
                 clientSocket.close();
-//                myServer.close();
-                System.out.println("Server Control - user logout");
+                System.out.println("Server Control: " + user.getName() + " logout");
                 serverRunning = false;
                 return true;
             } catch (IOException ex) {

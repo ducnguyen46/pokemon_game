@@ -6,9 +6,13 @@
 package View;
 
 import Control.ServerControl;
+import Model.User;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,8 +26,9 @@ public class ServerView implements Runnable {
     private ServerSocket myServer;
     private Socket clientSocket;
 
-    public ServerView() {
+    public static Map<String, ObjectOutputStream> userMap;
 
+    public ServerView() {
     }
 
     public void showMessage(String msg) {
@@ -32,6 +37,7 @@ public class ServerView implements Runnable {
 
     @Override
     public void run() {
+        userMap = new HashMap<>();
         while (true) {
             try {
                 myServer = new ServerSocket(portNumber);
@@ -43,7 +49,7 @@ public class ServerView implements Runnable {
                     Thread serverThread = new Thread(new ServerControl(clientSocket));
                     serverThread.start();
                 }
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(ServerView.class.getName()).log(Level.SEVERE, null, ex);
             }
