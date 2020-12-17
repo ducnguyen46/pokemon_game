@@ -23,8 +23,8 @@ public class ClientControl {
     private String serverHost = "localhost";
     private int serverPort = 9876;
 
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
+    ObjectOutputStream oos, oos_1;
+    ObjectInputStream ois, ois_1;
     Thread thread;
     
     //nguoi dung
@@ -39,6 +39,8 @@ public class ClientControl {
             mySocket = new Socket(serverHost, serverPort);
             oos = new ObjectOutputStream(mySocket.getOutputStream());
             ois = new ObjectInputStream(mySocket.getInputStream());
+            oos_1 = new ObjectOutputStream(mySocket.getOutputStream());
+            ois_1 = new ObjectInputStream(mySocket.getInputStream());
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
@@ -58,7 +60,7 @@ public class ClientControl {
         });
         thread.start();
     }
-
+    
     public void receiveInvite() {
         try {
             System.out.println("doc 1");

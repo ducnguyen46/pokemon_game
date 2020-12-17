@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/G:/Learning/LTM/Pokemon/pokemon_game/src/Game/MyMain.java</file>
             <file>file:/G:/Learning/LTM/Pokemon/pokemon_game/src/View/ClientView.java</file>
             <file>file:/G:/Learning/LTM/Pokemon/pokemon_game/src/View/InvitePlayer.java</file>
@@ -10,6 +11,25 @@
             <file>file:/G:/Learning/LTM/Pokemon/pokemon_game/src/Control/ServerControl.java</file>
             <file>file:/G:/Learning/LTM/Pokemon/pokemon_game/src/Game/MyFrame.java</file>
             <file>file:/G:/Learning/LTM/Pokemon/pokemon_game/src/Game/MyGraphics.java</file>
+=======
+            <file>file:/D:/GitHub/pokemon_game/src/View/InvitePlayer.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Model/Game.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Game/MyFrame.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Game/Algorithm.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/TCPRun/ServerRun.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/TCPRun/ClientRun.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/View/RankingView.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/View/ServerView.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/View/SignUpView.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Game/MyGraphics.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Game/MyMain.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Model/User.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Game/MyLine.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Control/ClientControl.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/View/LoginView.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/Control/ServerControl.java</file>
+            <file>file:/D:/GitHub/pokemon_game/src/View/ClientView.java</file>
+>>>>>>> 31be51ae532b7642874efbc6614c352a195aa0ed
         </group>
     </open-files>
 </project-private>

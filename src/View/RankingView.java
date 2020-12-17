@@ -53,7 +53,6 @@ public class RankingView extends javax.swing.JFrame {
                 rank++;
             }
         }
-
     }
 
     private void initTable2() {
@@ -70,12 +69,13 @@ public class RankingView extends javax.swing.JFrame {
         if (a != null) {
             tmAvgScore.setRowCount(0);
             System.out.println(a.size());
-        }
-        for (User i : a) {
-            String username = i.getUsername();
-            Double score = i.getScore();
-            tmAvgScore.addRow(new Object[]{rank, username, score});
-            rank++;
+            for (User i : a) {
+                String username = i.getUsername();
+                Double score = i.getScore();
+                tmAvgScore.addRow(new Object[]{rank, username, score});
+                rank++;
+            }
+
         }
     }
 
@@ -92,14 +92,15 @@ public class RankingView extends javax.swing.JFrame {
         if (a != null) {
             tmTime.setRowCount(0);
             System.out.println(a.size());
+            for (Vector i : a) {
+                String username = i.get(0).toString();
+                String time = i.get(1).toString();
+                Time.valueOf(time);
+                tmTime.addRow(new Object[]{rank, username, time});
+                rank++;
+            }
         }
-        for (Vector i : a) {
-            String username = i.get(0).toString();
-            String time = i.get(1).toString();
-            Time.valueOf(time);
-            tmTime.addRow(new Object[]{rank, username, time});
-            rank++;
-        }
+
     }
 
     /**
