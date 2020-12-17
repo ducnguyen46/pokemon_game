@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,11 +32,9 @@ public class ServerControl implements Runnable {
     private ObjectOutputStream oos;
     boolean serverRunning;
 
-    
     //user 1
     private ObjectOutputStream oosUser1;
-            
-            
+
     public ServerControl(Socket clientSocket) {
         this.clientSocket = clientSocket;
 
@@ -49,7 +48,7 @@ public class ServerControl implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted() && serverRunning) {
+        while (serverRunning) {
             System.out.println("thread main server");
             listening();
         }
@@ -141,7 +140,7 @@ public class ServerControl implements Runnable {
                     oos.writeObject(loadRankingAvgScore());
                 }
             }
-            
+
             if (o instanceof String) {
                 String request = (String) o;
                 System.out.println(request);
@@ -194,17 +193,17 @@ public class ServerControl implements Runnable {
                     oosUser1.writeObject(user);
                 }
             }
-            
+
             //dong y
-            if (o instanceof String){
+            if (o instanceof String) {
                 String denyInvite = (String) o;
-                if(denyInvite.equalsIgnoreCase("!acceptInvite")){
+                if (denyInvite.equalsIgnoreCase("!acceptInvite")) {
                     Object userInviteObject = ois.readObject();
-                    User userInvite = (User)userInviteObject;
-                    
+                    User userInvite = (User) userInviteObject;
+
                     ObjectOutputStream oosUserInvite = ServerView.userMap.get(userInvite.getUsername());
                     oosUserInvite.writeObject("!invite-accept");
-                    
+
                     Algorithm algorithm = new Algorithm(12, 12);
                     oos.writeObject("!startGame");
                     oos.writeObject(algorithm);
@@ -212,11 +211,11 @@ public class ServerControl implements Runnable {
                     oosUserInvite.writeObject(algorithm);
                 }
             }
-            
+
             //duoc dong y
-            if (o instanceof String){
-                String denyInvition= (String) o;
-                if(denyInvition.equalsIgnoreCase("!invite-accept")){
+            if (o instanceof String) {
+                String denyInvition = (String) o;
+                if (denyInvition.equalsIgnoreCase("!invite-accept")) {
                     oos.writeObject("!invite-accept");
 //                    Algorithm algorithm = new Algorithm(12, 12);
 //                    
@@ -227,25 +226,49 @@ public class ServerControl implements Runnable {
 //                    oos.writeObject(algorithm);
                 }
             }
-            
-            
+
             //tu choi
-            if (o instanceof String){
+            if (o instanceof String) {
                 String denyInvite = (String) o;
-                if(denyInvite.equalsIgnoreCase("!denyInvite")){
+                if (denyInvite.equalsIgnoreCase("!denyInvite")) {
                     Object userInviteObject = ois.readObject();
-                    User userInvite = (User)userInviteObject;
-                    
+                    User userInvite = (User) userInviteObject;
+
                     ObjectOutputStream oosUserInvite = ServerView.userMap.get(userInvite.getUsername());
                     oosUserInvite.writeObject("!invite-deny");
                 }
             }
-            
+
             //bi tu choi
-            if (o instanceof String){
-                String denyInvition= (String) o;
-                if(denyInvition.equalsIgnoreCase("!invite-deny")){
+            if (o instanceof String) {
+                String denyInvition = (String) o;
+                if (denyInvition.equalsIgnoreCase("!invite-deny")) {
                     oos.writeObject("!invite-deny");
+                }
+            }
+
+            //ghi vao nguoi chien thang
+            if (o instanceof String) {
+                String winStr = (String) o;
+                System.out.println("___winner");
+                if (winStr.equalsIgnoreCase("!winner")) {
+                    System.out.println("nhan array");
+                    Object usersObject = ois.readObject();
+                    if (usersObject instanceof ArrayList) {
+                        System.out.println("arraylist");
+                        ArrayList<User> users = (ArrayList<User>) usersObject;
+                        int second = ois.readInt();
+                        User user = getIdUser(users.get(0));
+                        User user1 = getIdUser(users.get(1));
+                        
+                        System.out.println(user.toString() + user1.toString());
+                        ObjectOutputStream oosUserPlayer = ServerView.userMap.get(user1.getUsername());
+                        System.out.println("ghi loser");
+                        oosUserPlayer.writeObject("!loser");
+                        
+                        boolean kq = insertGameAndDetail(user, user1, second, false);
+                        System.out.println("Ghi duoc hay k?" + kq);
+                    }
                 }
             }
 
@@ -352,7 +375,12 @@ public class ServerControl implements Runnable {
                 return true;
             } catch (IOException ex) {
                 try {
+                    ServerView.userMap.remove(user);
                     oos.writeObject(new String("logOutNotOK"));
+                    ois.close();
+                    oos.close();
+                    clientSocket.close();
+                    serverRunning = false;
                     Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex1) {
                     Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex1);
@@ -481,7 +509,7 @@ public class ServerControl implements Runnable {
                     Time timeFinish = rs.getTime("tgtb");
                     Vector v = new Vector();
                     v.add(username);
-                    v.add(timeFinish);                           
+                    v.add(timeFinish);
                     rscr.add(v);
                 }
             }
@@ -489,6 +517,57 @@ public class ServerControl implements Runnable {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rscr;
+    }
+
+    private User getIdUser(User user) {
+        String sql = "SELECT id FROM user WHERE username = ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user.setId(rs.getInt("id"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return user;
+    }
+
+    private boolean insertGameAndDetail(User user, User user1, int seconds, boolean peer) {
+        // peer : hòa hay không?
+        int hour = seconds / 3600;
+        int minute = (seconds % 3600) / 60;
+        int second = ((seconds % 3600) % 60);
+        String time = hour + ":" + minute + ":" + second;
+
+        String sql = "INSERT INTO game VALUES (0,'" + time + "')";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                int idGame = rs.getInt(1);
+                String sqlDetail = peer ? "INSERT INTO game_detail VALUES (?,?,'0.5'),(?,?,'0.5');"
+                        : "INSERT INTO game_detail VALUES (?,?,'1'),(?,?,'0');";
+                PreparedStatement ps2 = con.prepareStatement(sqlDetail);
+                ps2.setInt(1, idGame);
+                ps2.setInt(2, user.getId());
+                ps2.setInt(3, idGame);
+                ps2.setInt(4, user1.getId());
+
+                int kq = ps2.executeUpdate();
+                if (kq != 0) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

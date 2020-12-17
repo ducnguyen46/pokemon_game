@@ -5,6 +5,7 @@
  */
 package View;
 
+import Model.User;
 import java.util.Comparator;
 
 /**
@@ -16,9 +17,10 @@ public class InvitePlayer extends javax.swing.JDialog {
     /**
      * Creates new form InvitePlayer
      */
-    public InvitePlayer(java.awt.Frame parent, boolean modal) {
+    public InvitePlayer(java.awt.Frame parent, User userInvite, boolean modal) {
         super(parent, modal);
         initComponents();
+        jLabel2.setText(userInvite.getUsername());
     }
     
     public boolean getAccept(){

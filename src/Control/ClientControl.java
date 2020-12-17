@@ -26,6 +26,11 @@ public class ClientControl {
     ObjectOutputStream oos;
     ObjectInputStream ois;
     Thread thread;
+    
+    //nguoi dung
+    private User userCurrent;
+    //doi thu
+    private User userPlayer;
 
     private ClientView clientView;
 
@@ -67,13 +72,14 @@ public class ClientControl {
                     if (userObject instanceof User) {
                         User userInvite = (User) userObject;
                         System.out.println("gui yeu cau tu: " + userInvite.toString());
-                        InvitePlayer dialogInvite = new InvitePlayer(clientView, true);
+                        InvitePlayer dialogInvite = new InvitePlayer(clientView, userInvite, true);
                         dialogInvite.setVisible(true);
                         boolean acceptInvite = dialogInvite.getAccept();
 
                         if (acceptInvite) {
                             oos.writeObject("!acceptInvite");
                             oos.writeObject(userInvite);
+                            userPlayer = userInvite;
                         } else {
                             oos.writeObject("!denyInvite");
                             oos.writeObject(userInvite);
@@ -95,6 +101,14 @@ public class ClientControl {
                 String denyInvition = (String) o;
                 if (denyInvition.equalsIgnoreCase("!invite-accept")) {
                     System.out.println("Loi moi duoc chap nhan");
+                }
+            }
+            
+            if (o instanceof String) {
+                String lose = (String) o;
+                if (lose.equalsIgnoreCase("!loser")) {
+                    clientView.showMessageDialog("Bạn đã thua, trò chơi kết thúc!");
+                    clientView.getGame().stop();
                 }
             }
 
@@ -128,6 +142,7 @@ public class ClientControl {
             Object o = ois.readObject();
             if (o instanceof User) {
                 User resultUser = (User) o;
+                
                 //
                 System.out.println("user nhận về: " + resultUser.toString());
                 if (resultUser.getId() == -1) {
@@ -135,6 +150,7 @@ public class ClientControl {
                     return false;
                 } else {
                     user = resultUser;
+                    userCurrent = resultUser;
                     return true;
                 }
             }
@@ -248,7 +264,6 @@ public class ClientControl {
         try {
             //send data
             oos.writeObject(new String("!logout"));
-            new Thread().sleep(500);
             oos.writeObject(user);
             //
             System.out.println("user gửi đi-logout: " + user.toString());
@@ -266,14 +281,13 @@ public class ClientControl {
         } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
             return false;
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
     public void sendRequest(User user, User user1) {
         try {
+            userPlayer = user1;
             ArrayList users = new ArrayList<>();
             users.add(user);
             users.add(user1);
@@ -285,6 +299,21 @@ public class ClientControl {
             Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void winner(int second){
+        try {
+            oos.writeObject("!winner");
+            ArrayList users = new ArrayList();
+            users.add(userCurrent);
+            users.add(userPlayer);
+            System.out.println(userPlayer.toString());
+            oos.writeObject(users);
+            oos.writeInt(second);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     public boolean closeConnection() {
         try {

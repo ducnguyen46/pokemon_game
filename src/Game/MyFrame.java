@@ -1,5 +1,6 @@
 package Game;
 
+import Control.ClientControl;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -40,8 +41,10 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
     private MyGraphics graphicsPanel;
     private JPanel mainPanel;
     private Algorithm algorithm;
+    private ClientControl clientControl;
 
-    public MyFrame(Algorithm algorithm) {
+    public MyFrame(ClientControl clientControl, Algorithm algorithm) {
+        this.clientControl = clientControl;
         this.algorithm = algorithm;
         add(mainPanel = createMainPanel());
         setTitle("Pokemon Game");
@@ -66,7 +69,7 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
     }
 
     private JPanel createGraphicsPanel() {
-        graphicsPanel = new MyGraphics(this, row, col, algorithm);
+        graphicsPanel = new MyGraphics(this, row, col, clientControl, algorithm);
         
         JPanel panel = new JPanel(new GridBagLayout());
         // panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -147,7 +150,8 @@ public class MyFrame extends JFrame implements ActionListener, Runnable {
             newGame();
         }
         if(e.getSource() == btnStopGame){
-            // do something
+            clientControl.winner(getTime());
+            this.dispose();
         }
     }
 

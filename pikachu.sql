@@ -63,7 +63,8 @@ update user set score=0 where id=3;
 update user set score=0.5 where id=4;
 update user set score=1.5 where id=5;
 update user set state=1 where id=1;
-update user set state=1 where id=2;
+update
+ user set state=1 where id=2;
 update user set state=0 where id=3;
 update user set state=2 where id=4;
 update user set state=2 where id=5;

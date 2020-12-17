@@ -1,5 +1,6 @@
 package Game;
 
+import Control.ClientControl;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -7,6 +8,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 import java.util.Date;
 
 import javax.swing.Icon;
@@ -32,6 +34,7 @@ public class MyGraphics extends JPanel implements ActionListener {
     private Point p1 = null;
     private Point p2 = null;
     private Algorithm algorithm;
+    private ClientControl clientControl;
 
     public Algorithm getAlgorithm() {
         return algorithm;
@@ -46,7 +49,8 @@ public class MyGraphics extends JPanel implements ActionListener {
     private Color backGroundColor = Color.lightGray;
     private int item;
 
-    public MyGraphics(MyFrame frame, int row, int col, Algorithm algorithm) {
+    public MyGraphics(MyFrame frame, int row, int col,ClientControl clientControl, Algorithm algorithm) {
+        this.clientControl = clientControl;
         this.algorithm = algorithm;
         this.frame = frame;
         this.row = row + 2;
@@ -159,8 +163,9 @@ public class MyGraphics extends JPanel implements ActionListener {
             if (item == 0) {
                 System.out.println(score);
                 System.out.println(frame.getTime());
-                frame.showDialogNewGame(
-                        "You are winer!\nDo you want play again?", "Win");
+//                frame.showDialogNewGame(
+//                        "You are winer!\nDo you want play again?", "Win");
+            clientControl.winner(frame.getTime());
             }
         }
     }

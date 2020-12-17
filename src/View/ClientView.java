@@ -28,8 +28,8 @@ public class ClientView extends javax.swing.JFrame {
     private User user, user1;
     private DefaultTableModel tmOnline;
     private ClientControl clientControl;
+    private MyMain game;
 
-    ArrayList<User> ar = null;
 
     /**
      * Creates new form ClientView
@@ -234,9 +234,15 @@ public class ClientView extends javax.swing.JFrame {
     
     public void showGame(Algorithm algorithm){
         System.out.println("chay game");
-        new MyMain(algorithm);
+        game = new MyMain(clientControl, algorithm);
     }
-
+    public int showEndGameDialog(String mes, String title){
+        return JOptionPane.showConfirmDialog(this, mes, title, JOptionPane.YES_NO_OPTION);   
+    }
+    
+    public MyMain getGame(){
+        return game;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInvite;
